@@ -19,51 +19,17 @@ public class PlayerSpawner : MonoBehaviour
     private int gamepadId = 0;
 
 
-    // Start is called before the first frame update
-    void Start()
-    {
-
-    }
-
-    void OnEnable()
-    {
-        playerInputManager.onPlayerJoined += Spawn;
-        playerInputManager.onPlayerLeft += Despawn;
-    }
-    void OnDisable()
-    {
-        Debug.Log("Disable PlayerSpawner");
-    }
-
-    private void Despawn(PlayerInput input)
-    {
-        Debug.Log($"Leaving Player {input.playerIndex}, {input.currentActionMap}, {input.currentControlScheme}, {input.currentControlScheme}");
-        //Debug.Log("Leaving Player: "+ input.)
-    }
+    void OnEnable() => playerInputManager.onPlayerJoined += Spawn;
 
     private void Spawn(PlayerInput input)
     {
     	var player = input.GetComponent<Player>();
         OnPlayerSpawn(player);
         players.Add(player);
-        Debug.Log("Spawn!");
-        Debug.Log($"Spawning Player {input.playerIndex}, {input.currentActionMap}, {input.currentControlScheme}, {input.currentControlScheme}");
         var pi = input.GetComponent<PlayerInputController>();
         if(input.currentControlScheme == "Gamepad")
-            gamepadId++;
+            gamepadId++;        
 
-        
-
-        //input.name = "PlayerInput"+input.playerIndex;
-        pi.InitPlayerInput(input.currentControlScheme, input.playerIndex, gamepadId-1, input);
-        
+        pi.InitPlayerInput(input.playerIndex, gamepadId-1);        
     }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-
-    }
-
 }
