@@ -10,6 +10,8 @@ public class PlayerSpawner : MonoBehaviour
     [SerializeField] private int maxAmount;
     [SerializeField] private GameObject planetCenter;
     [SerializeField] private PlayerInputManager playerInputManager;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -18,12 +20,25 @@ public class PlayerSpawner : MonoBehaviour
 
     void OnEnable(){
         playerInputManager.onPlayerJoined += Spawn;
+        playerInputManager.onPlayerLeft += Despawn;
+    }
+    void OnDisable(){
+        Debug.Log("Disable PlayerSpawner");
     }
 
-    private void Spawn(UnityEngine.InputSystem.PlayerInput obj)
+    private void Despawn(PlayerInput input)
     {
-        Debug.Log("Spawn!");
+        Debug.Log($"Leaving Player {input.playerIndex}, {input.currentActionMap}, {input.currentControlScheme}, {input.currentControlScheme}");
+        //Debug.Log("Leaving Player: "+ input.)
     }
+
+    private void Spawn(PlayerInput input)
+    {
+        Debug.Log($"Spawning Player {input.playerIndex}, {input.currentActionMap}, {input.currentControlScheme}, {input.currentControlScheme}");
+        var pi = input.GetComponent<PlayerInputController>();
+        pi.InitPlayerInput(input.currentControlScheme);
+    }
+
 
     // Update is called once per frame
     void Update()

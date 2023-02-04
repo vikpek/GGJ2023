@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
-public class PlayerInput : MonoBehaviour
+public class PlayerInputController : MonoBehaviour
 {
 
     [SerializeField] private float maxSpeed = 5.0f;
@@ -13,6 +13,9 @@ public class PlayerInput : MonoBehaviour
     public Action<float> OnMove = delegate { };
 
     private InputMaster inputMaster;
+    private PlayerInput playerInput;
+
+    string controlScheme;
 
     private string name = "";
 
@@ -23,24 +26,31 @@ public class PlayerInput : MonoBehaviour
 
     void Awake()
     {
-        inputMaster = new InputMaster();
+        //inputMaster = new InputMaster();
         name = gameObject.GetInstanceID().ToString();
         Debug.Log("Created InputMaster " + name);
+        //inputMaster = playerInput.; 
+        
     }
 
     private void OnEnable()
-    {
-        inputMaster.Enable();
-        inputMaster.Player.Move.performed += HandleMove; //TODO WASD
-        inputMaster.Player.Action.performed += HandleAction;
+    {   
+        Debug.Log("Player on enable"); 
+        playerInput = GetComponent<PlayerInput>();     
+        Debug.Log("currentScheme: " + controlScheme + " playerInput: " + playerInput);
+        playerInput.SwitchCurrentControlScheme(controlScheme);
+        // inputMaster.Enable();
+        // inputMaster.Player.Move.performed += HandleMove; //TODO WASD
+        // inputMaster.Player.Action.performed += HandleAction;
 
-        //Keyboard
-        inputMaster.Player.Move.canceled += HandleMoveStop;
-        Debug.Log("OnEnable");
+        // //Keyboard
+        // inputMaster.Player.Move.canceled += HandleMoveStop;
+        // Debug.Log("InitPlayerInput");
     }
 
     private void OnDisable()
     {
+        Debug.Log("Player on disable");
         inputMaster.Disable();
         inputMaster.Player.Move.performed -= HandleMove;
         inputMaster.Player.Action.performed -= HandleAction;
@@ -64,8 +74,14 @@ public class PlayerInput : MonoBehaviour
         if (!Application.isFocused)
             return;
     }
-    private void HandleMoveStop(InputAction.CallbackContext context){  
-        Debug.Log("Cancelled");      
+    private void HandleMoveStop(InputAction.CallbackContext context)
+    {
         OnMove(0);
+    }
+
+    public void InitPlayerInput(string currentControlScheme)
+    {
+        controlScheme = currentControlScheme;
+       
     }
 }

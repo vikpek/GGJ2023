@@ -11,7 +11,7 @@ namespace DefaultNamespace
             AddRotation(movementSpeed);
         }
 
-        [SerializeField] private PlayerInput playerInput;
+        [SerializeField] private PlayerInputController playerInput;
         [SerializeField] private int maxSpeed = 5;
         private string name = "";
         private int currentSpeed;
@@ -19,7 +19,7 @@ namespace DefaultNamespace
 
         void Awake()
         {
-            playerInput = GetComponent<PlayerInput>();
+            playerInput = GetComponent<PlayerInputController>();
         }
 
         void OnEnable()
