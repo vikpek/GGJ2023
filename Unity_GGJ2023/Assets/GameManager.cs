@@ -63,8 +63,6 @@ public class GameManager : MonoBehaviour
         rotatables.Add(weedRootInstance);
 
         weedRootInstance.OnInteract += HandleRemoveInteractiveRotatable;
-        weedRootInstance.transform.Rotate(Vector3.back, rand.Next(0, 360), Space.Self);
-        weedRootInstance.OnInteract += HandleRemoveInteractiveRotatable;
         return weedRootInstance;
     }
     private void HandleRemoveInteractiveRotatable(InteractiveRotatable obj)
