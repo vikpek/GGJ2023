@@ -146,7 +146,7 @@ namespace DefaultNamespace
         private void HandleMove(float speed)
         {
             currentSpeed = (speed * Configs.Instance.Get.maxSpeed);
-            animator.SetFloat("speed", currentSpeed);
+            animator.SetFloat("Speed", currentSpeed);
             animator.SetBool("Watering", false);
             //Debug.Log("HandleMove speed: " + speed + " currentSpeed: " + currentSpeed);
         }
