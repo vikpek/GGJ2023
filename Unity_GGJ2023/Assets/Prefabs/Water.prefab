@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1346895201046143976}
   - component: {fileID: 2048332649551397251}
-  - component: {fileID: 5754377548959723740}
+  - component: {fileID: 6203941963843844390}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -85,22 +85,26 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!111 &5754377548959723740
-Animation:
+--- !u!95 &6203941963843844390
+Animator:
+  serializedVersion: 5
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 427879529855301121}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Animation: {fileID: 7400000, guid: 63f586c2dbd6d78409334bd12131c3b9, type: 2}
-  m_Animations:
-  - {fileID: 7400000, guid: 63f586c2dbd6d78409334bd12131c3b9, type: 2}
-  m_WrapMode: 0
-  m_PlayAutomatically: 1
-  m_AnimatePhysics: 0
-  m_CullingType: 0
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 107bba562ce27c747ac8855d25a9c8f9, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
 --- !u!1 &2923845078523530109
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,5 +242,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatingObject: {fileID: 2923845080101636478}
-  weedRootRenderer: {fileID: 2048332649551397251}
   buttonHint: {fileID: 0}
