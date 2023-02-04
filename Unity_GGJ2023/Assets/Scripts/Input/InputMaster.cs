@@ -127,7 +127,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                 {
                     ""name"": """",
                     ""id"": ""f55686c2-c32f-4f64-bb8e-4e50b38776b9"",
-                    ""path"": ""<Gamepad>/select"",
+                    ""path"": ""<XInputController>/buttonSouth"",
                     ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Gamepad"",
