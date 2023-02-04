@@ -12,7 +12,7 @@ namespace DefaultNamespace
         public event Action<InteractiveRotatable> OnInteract;
 
         private string name = "";
-        private int currentSpeed;
+        private float currentSpeed;
         private List<WeedRoot> weedRootsWithinRange = new();
         private List<Seedling> seedlingsWithinRange = new();
 
@@ -89,8 +89,8 @@ namespace DefaultNamespace
         }
         private void PrintWhatIsInRange()
         {
-            Debug.Log(string.Join(" ", weedRootsWithinRange));
-            Debug.Log(string.Join(" ", seedlingsWithinRange));
+            // Debug.Log(string.Join(" ", weedRootsWithinRange));
+            // Debug.Log(string.Join(" ", seedlingsWithinRange));
         }
 
         private void FixedUpdate()
@@ -99,7 +99,8 @@ namespace DefaultNamespace
         }
         private void HandleMove(float speed)
         {
-            currentSpeed = (int)(speed * Configs.Instance.Get.maxSpeed);
+            currentSpeed = (speed * Configs.Instance.Get.maxSpeed);
+            //Debug.Log("HandleMove speed: " + speed + " currentSpeed: " + currentSpeed);
         }
     }
 }

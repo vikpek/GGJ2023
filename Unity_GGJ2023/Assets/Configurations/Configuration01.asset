@@ -14,3 +14,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   musicVolume: 0
   soundEffectsVolume: 0
+  minNightAngle: 150
+  maxNightAngle: 320
+  rotationSpeed: 0.01
+  playerAmount: 2
+  maxSpeed: 2
+  spawnInterval: 3
+  ripOutStrength: 25
+  growingPercentageForVFXRootWarning: 60
+  growingStateSpeedSlowDown: 1000

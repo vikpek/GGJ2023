@@ -165,7 +165,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotatingObject: {fileID: 6137684974178593759}
   playerInput: {fileID: 0}
-  maxSpeed: 5
   colliderForwarder: {fileID: 3735297319125511613}
 --- !u!114 &8297475875686338692
 MonoBehaviour:
@@ -281,7 +280,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0b8d668b9968f4fb46510d077ab02b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 5
+  maxSpeed: 2
   currentSpeed: 0
   SpeedAcc:
     serializedVersion: 2
@@ -307,6 +306,8 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+  curveSteps: 0.01
+  curveDuration: 0.5
 --- !u!1 &6137684975823808988
 GameObject:
   m_ObjectHideFlags: 0
