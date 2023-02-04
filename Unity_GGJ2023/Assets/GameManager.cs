@@ -13,7 +13,6 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerSpawner playerSpawner;
     [SerializeField] private float rotationSpeed = 0.01f;
 
-
     public float SpawnInterval = 3.0f;
 
     private List<IRotatable> rotatables = new();
@@ -27,11 +26,11 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         playerSpawner.OnPlayerSpawn += HandlePlayerSpawn;
-        
+
         InvokeRepeating("SpawnTick", 0f, 3f);
         rotatables.Add(Instantiate(planetPrefab, planetCenter));
-        
-        
+
+
     }
     private void HandlePlayerSpawn(Player obj) => rotatables.Add(obj);
     void SpawnTick()

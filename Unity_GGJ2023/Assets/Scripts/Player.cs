@@ -1,16 +1,11 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEditor;
-
 namespace DefaultNamespace
 {
     public class Player : Rotatable
     {
         private int movementSpeed = 10;
-        public void MoveClockwise()
-        {
-            AddRotation(movementSpeed);
-        }
 
         [SerializeField] private PlayerInputController playerInput;
         [SerializeField] private int maxSpeed = 5;
@@ -19,7 +14,7 @@ namespace DefaultNamespace
 
         private string name = "";
         private int currentSpeed;
-        private WeedRoot[] StoodOnWeedRoot = null;
+        private List<WeedRoot> rootsWithinRange = new();
 
         void Awake()
         {
@@ -28,22 +23,43 @@ namespace DefaultNamespace
 
         void OnEnable()
         {
-            colliderForwarder.OnCollision += OnForwardedCollision;
+            colliderForwarder.OnTriggerEnterForward += OnForwardedTriggerEnterForward;
+            colliderForwarder.OnTriggerExitForward += OnForwardedTriggerExit;
             playerInput.OnMove += HandleMove;
         }
 
         private void OnDisable()
         {
-            colliderForwarder.OnCollision -= OnForwardedCollision;
+            colliderForwarder.OnTriggerEnterForward -= OnForwardedTriggerEnterForward;
+            colliderForwarder.OnTriggerExitForward -= OnForwardedTriggerExit;
             playerInput.OnMove -= HandleMove;
         }
-        private void OnForwardedCollision(Collider obj)
+        private void OnForwardedTriggerEnterForward(Collider2D collider)
         {
-            WeedRoot[] weedRoot = obj.GetComponentsInParent<WeedRoot>();
-            if (weedRoot is null)
+            WeedRoot[] weedRoots = collider.GetComponentsInParent<WeedRoot>();
+            if (weedRoots is null)
                 return;
 
-            StoodOnWeedRoot = weedRoot;
+            rootsWithinRange.AddRange(weedRoots);
+            PrintCurrentRootsInRange();
+        }
+        private void OnForwardedTriggerExit(Collider2D collider)
+        {
+            WeedRoot[] weedRoots = collider.GetComponentsInParent<WeedRoot>();
+            if (weedRoots is null)
+                return;
+
+            foreach (WeedRoot weedRoot in weedRoots)
+            {
+                if(rootsWithinRange.Contains(weedRoot))
+                    rootsWithinRange.Remove(weedRoot);
+            }
+
+            PrintCurrentRootsInRange();
+        }
+        private void PrintCurrentRootsInRange()
+        {
+            Debug.Log(string.Join(" ", rootsWithinRange));
         }
 
         private void FixedUpdate()

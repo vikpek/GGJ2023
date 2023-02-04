@@ -18,27 +18,28 @@ public class PlayerSpawner : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+
     }
 
-    void OnEnable(){
+    void OnEnable()
+    {
         playerInputManager.onPlayerJoined += Spawn;
         playerInputManager.onPlayerLeft += Despawn;
     }
-    void OnDisable(){
+    void OnDisable()
+    {
         Debug.Log("Disable PlayerSpawner");
     }
 
     private void Despawn(PlayerInput input)
     {
-        
         Debug.Log($"Leaving Player {input.playerIndex}, {input.currentActionMap}, {input.currentControlScheme}, {input.currentControlScheme}");
         //Debug.Log("Leaving Player: "+ input.)
     }
 
     private void Spawn(PlayerInput input)
     {
-    	var player =input.GetComponent<Player>();
+        var player = input.GetComponent<Player>();
         OnPlayerSpawn(player);
         players.Add(player);
         Debug.Log("Spawn!");
@@ -51,7 +52,7 @@ public class PlayerSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
 }
