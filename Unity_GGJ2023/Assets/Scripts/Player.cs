@@ -15,12 +15,10 @@ namespace DefaultNamespace
         [SerializeField] private PlayerInputController playerInput;
         [SerializeField] private int maxSpeed = 5;
         [SerializeField] private ColliderForwarder colliderForwarder;
-
         public event Action<WeedRoot> IsOnWeedRoot;
 
         private string name = "";
         private int currentSpeed;
-
 
         void Awake()
         {
@@ -47,16 +45,10 @@ namespace DefaultNamespace
         {
             AddRotation(currentSpeed);
         }
-                public void MoveCounterClockwise()
-        {
-            AddRotation(movementSpeed);
-        }
         private void HandleMove(float speed)
         {
             //Debug.Log("Handle");
             currentSpeed = (int)(speed * maxSpeed);
         }
-
-
     }
 }
