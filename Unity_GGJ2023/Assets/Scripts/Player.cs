@@ -26,6 +26,7 @@ namespace DefaultNamespace
             colliderForwarder.OnTriggerEnterForward += OnForwardedTriggerEnterForward;
             colliderForwarder.OnTriggerExitForward += OnForwardedTriggerExit;
             playerInput.OnMove += HandleMove;
+            playerInput.OnAction += HandleAction;
         }
 
         private void OnDisable()
@@ -33,6 +34,7 @@ namespace DefaultNamespace
             colliderForwarder.OnTriggerEnterForward -= OnForwardedTriggerEnterForward;
             colliderForwarder.OnTriggerExitForward -= OnForwardedTriggerExit;
             playerInput.OnMove -= HandleMove;
+            playerInput.OnAction -= HandleAction;
         }
         private void OnForwardedTriggerEnterForward(Collider2D collider)
         {
@@ -40,7 +42,12 @@ namespace DefaultNamespace
             if (weedRoots is null)
                 return;
 
-            rootsWithinRange.AddRange(weedRoots);
+            foreach (WeedRoot weedRoot in weedRoots)
+            {
+                rootsWithinRange.Add(weedRoot);
+                weedRoot.ShowActionButtonHint();
+
+            }
             PrintCurrentRootsInRange();
         }
         private void OnForwardedTriggerExit(Collider2D collider)
@@ -51,11 +58,21 @@ namespace DefaultNamespace
 
             foreach (WeedRoot weedRoot in weedRoots)
             {
-                if(rootsWithinRange.Contains(weedRoot))
+                if (rootsWithinRange.Contains(weedRoot))
+                {
                     rootsWithinRange.Remove(weedRoot);
+                    weedRoot.HideActionButtonHint();
+                }
             }
 
             PrintCurrentRootsInRange();
+        }
+        private void HandleAction()
+        {
+            foreach (WeedRoot weedRoot in rootsWithinRange)
+            {
+                weedRoot.RipOut();
+            }
         }
         private void PrintCurrentRootsInRange()
         {

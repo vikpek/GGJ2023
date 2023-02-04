@@ -47,7 +47,14 @@ public class GameManager : MonoBehaviour
         WeedRoot weedRootInstance = Instantiate(weedRootPrefab, planetCenter);
         rotatables.Add(weedRootInstance);
         weedRootInstance.transform.Rotate(Vector3.back, rand.Next(0, 360), Space.Self);
+        weedRootInstance.OnRippedOut += HandleRippedOut;
         return weedRootInstance;
+    }
+    private void HandleRippedOut(WeedRoot obj)
+    {
+        IRotatable rotatable = obj;
+        if (rotatables.Contains(rotatable))
+            rotatables.Remove(rotatable);
     }
 
     void Update()

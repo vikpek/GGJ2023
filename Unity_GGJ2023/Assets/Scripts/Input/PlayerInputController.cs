@@ -14,6 +14,8 @@ public class PlayerInputController : MonoBehaviour
 
     public Action<float> OnMove = delegate { };
     private int gamepadId;
+    public Action OnAction = delegate { };
+
     private InputMaster inputMaster;
     private PlayerInput playerInput;
 
@@ -68,6 +70,8 @@ public class PlayerInputController : MonoBehaviour
         //Debug.Log($"HandleMove Trigger. context:{context.valueType}, moveInput:{context.ReadValue<Vector2>()}");
         if (!Application.isFocused)
             return;
+
+        OnAction();
     }
     public void HandleMoveStop(InputAction.CallbackContext context)
     {
