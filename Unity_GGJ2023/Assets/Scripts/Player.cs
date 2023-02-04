@@ -28,7 +28,7 @@ namespace DefaultNamespace
         private Cargo CurrentlyHolding;
         private List<WeedRoot> weedRootsWithinRange = new();
         private List<Seedling> seedlingsWithinRange = new();
-        private List<Seedling> waterWithinRange = new();
+        private List<Water> waterWithinRange = new();
 
         void Awake()
         {
@@ -55,14 +55,12 @@ namespace DefaultNamespace
             PerformFunctionOn(AddAndShow, collider, weedRootsWithinRange);
             PerformFunctionOn(AddAndShow, collider, seedlingsWithinRange);
             PerformFunctionOn(AddAndShow, collider, waterWithinRange);
-            PrintWhatIsInRange();
         }
         private void OnForwardedTriggerExit(Collider2D collider)
         {
             PerformFunctionOn(RemoveAndHide, collider, weedRootsWithinRange);
             PerformFunctionOn(RemoveAndHide, collider, seedlingsWithinRange);
             PerformFunctionOn(RemoveAndHide, collider, waterWithinRange);
-            PrintWhatIsInRange();
         }
         bool AddAndShow<T>(List<T> interactiveRotatables, T interactiveRotatable) where T : InteractiveRotatable
         {
@@ -98,32 +96,24 @@ namespace DefaultNamespace
                 seedlingsWithinRange.Count <= 0 &&
                 waterWithinRange.Count <= 0)
                 OnInteract(null);
+
             else if(weedRootsWithinRange.Count > 0)
-                animator.SetTrigger("TriggerHit"); 
+                animator.SetTrigger("TriggerHit");
+
             else if(seedlingsWithinRange.Count > 0)
                 animator.SetBool("Watering", true);
-            
-            
 
             foreach (var seedling in seedlingsWithinRange)
                 OnInteract(seedling);
 
-            foreach (var seedling in waterWithinRange)
-                OnInteract(seedling);
+            foreach (var water in waterWithinRange)
+                OnInteract(water);
 
             foreach (WeedRoot weedRoot in weedRootsWithinRange)
                 weedRoot.RipOut();
         }
-        private void PrintWhatIsInRange()
-        {
-            // Debug.Log(string.Join(" ", weedRootsWithinRange));
-            // Debug.Log(string.Join(" ", seedlingsWithinRange));
-        }
 
-        private void FixedUpdate()
-        {
-            AddRotation(currentSpeed);
-        }
+        private void FixedUpdate() => AddRotation(currentSpeed);
 
         private void Update()
         {

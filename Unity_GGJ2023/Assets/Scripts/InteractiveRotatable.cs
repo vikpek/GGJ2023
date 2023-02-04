@@ -44,10 +44,10 @@ public class InteractiveRotatable : Rotatable
 
     public void ShowActionButtonHint()
     {
-        buttonHint.gameObject.SetActive(true);
+        // buttonHint.gameObject.SetActive(true);
     }
     public void HideActionButtonHint()
     {
-        buttonHint.gameObject.SetActive(false);
+        // buttonHint.gameObject.SetActive(false);
     }
 }

@@ -69,7 +69,13 @@ public class GameManager : MonoBehaviour
     private void HandleOnInteract(InteractiveRotatable obj, Player player)
     {
         if (obj == null)
-            SpawnSeedling(player);
+        {
+            if (player.HasWater())
+            {
+                SpawnSeedling(player);
+                player.UseWater();
+            }
+        }
         else
         {
             switch (obj)
@@ -78,7 +84,7 @@ public class GameManager : MonoBehaviour
                     player.AddWater();
                     break;
                 case Seedling seedling:
-                    if(Seedling.IsReadyToHarvest)
+                    if (Seedling.IsReadyToHarvest)
                         player.AddFlower();
                     break;
 
