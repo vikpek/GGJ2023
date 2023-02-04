@@ -15,6 +15,7 @@ namespace DefaultNamespace
 
         [SerializeField] private PlayerInputController playerInput;
         [SerializeField] private ColliderForwarder colliderForwarder;
+        [SerializeField] private Animator animator;
         public event Action<InteractiveRotatable> OnInteract;
 
         private int waterLevel = 0;
@@ -95,6 +96,12 @@ namespace DefaultNamespace
                 seedlingsWithinRange.Count <= 0 &&
                 waterWithinRange.Count <= 0)
                 OnInteract(null);
+            else if(weedRootsWithinRange.Count > 0)
+                animator.SetTrigger("TriggerHit"); 
+            else if(seedlingsWithinRange.Count > 0)
+                animator.SetBool("Watering", true);
+            
+            
 
             foreach (var seedling in seedlingsWithinRange)
                 OnInteract(seedling);
@@ -118,6 +125,8 @@ namespace DefaultNamespace
         private void HandleMove(float speed)
         {
             currentSpeed = (speed * Configs.Instance.Get.maxSpeed);
+            animator.SetFloat("speed", currentSpeed);
+            animator.SetBool("Watering", false);
             //Debug.Log("HandleMove speed: " + speed + " currentSpeed: " + currentSpeed);
         }
         public void AddWater()

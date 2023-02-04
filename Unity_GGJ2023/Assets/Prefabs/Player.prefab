@@ -187,6 +187,7 @@ MonoBehaviour:
   rotatingObject: {fileID: 6137684974178593759}
   playerInput: {fileID: 0}
   colliderForwarder: {fileID: 3735297319125511613}
+  animator: {fileID: 2389234303795318967}
 --- !u!114 &8297475875686338692
 MonoBehaviour:
   m_ObjectHideFlags: 0

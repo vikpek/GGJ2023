@@ -42,28 +42,23 @@ public class PlayerInputController : MonoBehaviour
 
         if (context.performed)
         {
-            //TODO
-            //!inSpeedUp && >= 0
-            //!inSlowDown && == 0
             isRunningLeft = context.ReadValue<Vector2>()[0] < 0f;
             if (!inSpeedUp && context.ReadValue<Vector2>()[0] != 0f)
             {
-                //float value = context.ReadValue<Vector2>()[0];
-                //OnMove(context.ReadValue<Vector2>()[0]*animationCurveValue);
                 Debug.Log("Starting Acceleration with " + curvePointer + " curvePointer");
                 speedUpCoroutine = StartCoroutine("AccelerationFade");
                 return;
             }
 
             if (!inSlowDown && context.ReadValue<Vector2>()[0] == 0f)
-            {                
+            {
                 slowDownCoroutine = StartCoroutine("SlowDownFade");
             }
         }
         if (context.canceled)
         {
             if (!inSlowDown && context.ReadValue<Vector2>()[0] == 0f)
-            {                
+            {
                 slowDownCoroutine = StartCoroutine("SlowDownFade");
             }
         }
@@ -84,12 +79,10 @@ public class PlayerInputController : MonoBehaviour
     }
 
     IEnumerator AccelerationFade()
-    {
-        //TODO in slowDown - remove slowdown coroutine
-        //use class curvePointer
-        //        
+    {     
         Debug.Log("AccelerationFade entry, curvePointer: " + curvePointer);
-        if (slowDownCoroutine != null){        
+        if (slowDownCoroutine != null)
+        {
             StopCoroutine(slowDownCoroutine);
             inSlowDown = false;
         }
@@ -101,39 +94,36 @@ public class PlayerInputController : MonoBehaviour
         }
         inSpeedUp = true;
         float elapsedTime = 0f;
-        float multiplier = isRunningLeft ? -1f: 1f;
-        while(elapsedTime < curveDuration ){
-             //Debug.Log("AccelerationFade while, curvePointer: " + curvePointer + ", animationCurveValue: " + animationCurveValue);
-        
+        float multiplier = isRunningLeft ? -1f : 1f;
+        while (elapsedTime < curveDuration)
+        {
+            //Debug.Log("AccelerationFade while, curvePointer: " + curvePointer + ", animationCurveValue: " + animationCurveValue);
+
             elapsedTime += Time.deltaTime; //fixedDelta?
-             Debug.Log("AccelerationFade while, elapsed Time:"+elapsedTime + " curveDuration: " + curveDuration + " /= " + (elapsedTime/curveDuration));
+            Debug.Log("AccelerationFade while, elapsed Time:" + elapsedTime + " curveDuration: " + curveDuration + " /= " + (elapsedTime / curveDuration));
             curvePointer += (Time.deltaTime / curveDuration);
             animationCurveValue = SpeedAcc.Evaluate(curvePointer);
             OnMove(animationCurveValue * multiplier);
+            if (curvePointer == 1)
+            {
+                inSpeedUp = false;
+                yield break;
+            }
             yield return null;
         }
-        // while (curvePointer <= 1f)
-        // {
-        //     Debug.Log("AccelerationFade curvePointer: " + curvePointer);
-        //     animationCurveValue = SpeedAcc.Evaluate(curvePointer);
-        //     OnMove(animationCurveValue * multiplier);
-        //     curvePointer += curveSteps;
-        //     yield return null;
-        // }
         curvePointer = 1f;
         inSpeedUp = false;
     }
 
     IEnumerator SlowDownFade()
     {
-        //TODO in slowDown - remove slowdown coroutine
-        //use class curvePointer
-        //
-        if (speedUpCoroutine != null){
+        
+        if (speedUpCoroutine != null)
+        {
             StopCoroutine(speedUpCoroutine);
             inSpeedUp = false;
         }
-        
+
         if (inSlowDown)
         {
             Debug.Log("SlowDownFade break");
@@ -151,16 +141,13 @@ public class PlayerInputController : MonoBehaviour
             curvePointer -= (Time.deltaTime / curveDuration);
             animationCurveValue = SpeedAcc.Evaluate(curvePointer);
             OnMove(animationCurveValue * multiplier);
+            if (curvePointer == 0)
+            {
+                inSlowDown = false;
+                yield break;
+            }
             yield return null;
         }
-        // while (curvePointer >= 0f)
-        // {            
-        //     Debug.Log("SlowDownFade curvePointer: " +  curvePointer + " - " + curveSteps);
-        //     animationCurveValue = SpeedAcc.Evaluate(curvePointer);
-        //     OnMove(animationCurveValue*multiplier);
-        //     curvePointer -= curveSteps;
-        //     yield return null;
-        // }
         curvePointer = 0f;
         inSlowDown = false;
     }
