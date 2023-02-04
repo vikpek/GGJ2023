@@ -6,6 +6,8 @@ using UnityEngine;
 using Random = System.Random;
 public class GameManager : MonoBehaviour
 {
+    [SerializeField] private Transform planetCenter;
+
     [SerializeField] private Planet planetPrefab;
     [SerializeField] private Player playerPrefab;
     [SerializeField] private WeedRoot weedRootPrefab;
@@ -17,17 +19,17 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        planet = Instantiate(planetPrefab, transform);
+        planet = Instantiate(planetPrefab, planetCenter);
         for (int i = 0; i < playerAmount; i++)
         {
-            players.Add(Instantiate(playerPrefab, transform));
+            players.Add(Instantiate(playerPrefab, planetCenter));
         }
     }
 
     Random rand = new();
     private WeedRoot SpawnWeedRoot()
     {
-        var weedRootInstance = Instantiate(weedRootPrefab, transform);
+        var weedRootInstance = Instantiate(weedRootPrefab, planetCenter);
         weedRootInstance.transform.Rotate(Vector3.back, rand.Next(0, 360), Space.Self);
         return weedRootInstance;
     }
