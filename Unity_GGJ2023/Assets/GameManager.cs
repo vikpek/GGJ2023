@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = System.Random;
 public class GameManager : MonoBehaviour
 {
@@ -12,17 +13,35 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Player playerPrefab;
     [SerializeField] private WeedRoot weedRootPrefab;
     [SerializeField] private int playerAmount = 2;
+    public float SpawnInterval = 3.0f;
 
     private IRotatable planet;
     private List<Player> players = new();
     private List<WeedRoot> weedRoots = new();
 
+    private float timer = 0.0f;
+
+    private Action OnWeedGrow = delegate { };
+
     void Start()
     {
+        InvokeRepeating("SpawnTick", 0f, 3f);
         planet = Instantiate(planetPrefab, planetCenter);
         // for (int i = 0; i < playerAmount; i++)
         // {
         //     players.Add(Instantiate(playerPrefab, planetCenter));
+        // }
+    }
+    void SpawnTick()
+    {
+        // timer += Time.deltaTime;
+        // if (timer >= SpawnInterval)
+        // {
+        OnWeedGrow();
+        var weedRoot = SpawnWeedRoot();
+        OnWeedGrow += weedRoot.Grow;
+        weedRoots.Add(weedRoot);
+        //     timer = 0.0f;
         // }
     }
 
@@ -34,21 +53,10 @@ public class GameManager : MonoBehaviour
         return weedRootInstance;
     }
 
-    public float interval = 1.0f;  // The interval in seconds
-    private float timer = 0.0f;  // The timer
+
 
     void Update()
     {
-        timer += Time.deltaTime;
-
-        if (timer >= interval)
-        {
-            weedRoots.Add(SpawnWeedRoot());
-            timer = 0.0f;
-
-        }
-
-
         planet.AddRotation(1);
 
         // if (Input.GetKey(KeyCode.RightArrow))
@@ -63,12 +71,5 @@ public class GameManager : MonoBehaviour
         // if (Input.GetKey(KeyCode.D))
         //     players[1].MoveCounterClockwise();
 
-
-
-        // if(Input.GetKey(KeyCode.S))
-        //
-        //
-        // if(Input.GetKey(KeyCode.DownArrow))
-        //
     }
 }
