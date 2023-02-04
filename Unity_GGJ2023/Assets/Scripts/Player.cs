@@ -16,6 +16,8 @@ namespace DefaultNamespace
         [SerializeField] private PlayerInputController playerInput;
         [SerializeField] private ColliderForwarder colliderForwarder;
         [SerializeField] private Animator animator;
+        [SerializeField] private SpriteRenderer cargoSprite;
+        
         public event Action<InteractiveRotatable> OnInteract;
 
         private int waterLevel = 0;
@@ -121,6 +123,25 @@ namespace DefaultNamespace
         private void FixedUpdate()
         {
             AddRotation(currentSpeed);
+        }
+
+        private void Update()
+        {
+            switch (CurrentlyHolding)
+            {
+
+                case Cargo.Nothing:
+                    cargoSprite.sprite = null;
+                    break;
+                case Cargo.Water:
+                    cargoSprite.sprite = Configs.Instance.Get.waterSprite;
+                    break;
+                case Cargo.Flower:
+                    cargoSprite.sprite = Configs.Instance.Get.flowerSprite;
+                    break;
+                default:
+                    throw new ArgumentOutOfRangeException();
+            }
         }
         private void HandleMove(float speed)
         {

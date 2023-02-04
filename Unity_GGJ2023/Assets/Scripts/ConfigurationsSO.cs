@@ -20,4 +20,6 @@ public class ConfigurationsSO : ScriptableObject
     public int ripOutStrength = 25;
     public int growingPercentageForVFXRootWarning = 60;
     public float growingStateSpeedSlowDown = 1000f;
+    public Sprite waterSprite;
+    public Sprite flowerSprite;
 }
