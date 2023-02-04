@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Player playerPrefab;
     [SerializeField] private WeedRoot weedRootPrefab;
     [SerializeField] private Seedling seedlingPrefab;
+    [SerializeField] private Water waterPrefab;
     [SerializeField] private int playerAmount = 2;
     [SerializeField] private PlayerSpawner playerSpawner;
     [SerializeField] private float rotationSpeed = 0.01f;
@@ -40,6 +41,16 @@ public class GameManager : MonoBehaviour
         playerSpawner.OnPlayerSpawn += HandlePlayerSpawn;
         InvokeRepeating("SpawnTick", 0f, SpawnInterval);
         rotatables.Add(Instantiate(planetPrefab, planetCenter));
+
+        InitWater(0f);
+        InitWater(180f);
+    }
+
+    private void InitWater(float rotation){
+        Water water = Instantiate(waterPrefab, planetCenter);
+        rotatables.Add(water);
+        water.transform.Rotate(Vector3.back, rotation, Space.Self);
+        //seedling.OnInteract += HandleHarvestSeedling;
     }
     private void HandlePlayerSpawn(Player obj)
     {
