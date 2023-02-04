@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
-using UnityEngine.Serialization;
 using Random = System.Random;
 public class GameManager : MonoBehaviour
 {
@@ -20,10 +19,6 @@ public class GameManager : MonoBehaviour
 
     private int minNightAngleAdd = 0;
     private int maxNightAngleAdd = 0;
-    
-
-    
-
 
     public float SpawnInterval = 3.0f;
 
@@ -54,12 +49,14 @@ public class GameManager : MonoBehaviour
     }
     private void HandlePlayerSpawn(Player obj)
     {
-        obj.OnInteract += HandleRemoveInteractiveRotatable;
+        obj.OnInteract += delegate(InteractiveRotatable rotatable)
+        {
+            HandleOnInteract(rotatable, obj);
+        };
         rotatables.Add(obj);
     }
     void SpawnTick()
     {
-        OnWeedGrow();
         var weedRoot = SpawnWeedRoot();
         OnWeedGrow += weedRoot.Grow;
         weedRoots.Add(weedRoot);
@@ -70,26 +67,39 @@ public class GameManager : MonoBehaviour
     {
         WeedRoot weedRootInstance = Instantiate(weedRootPrefab, planetCenter);
         weedRootInstance.Reset();
-        weedRootInstance.transform.Rotate(Vector3.back, rand.Next(minNightAngle +minNightAngleAdd, maxNightAngle + maxNightAngleAdd), Space.Self);
+        weedRootInstance.transform.Rotate(Vector3.back, rand.Next(minNightAngle + minNightAngleAdd, maxNightAngle + maxNightAngleAdd), Space.Self);
         rotatables.Add(weedRootInstance);
 
-        weedRootInstance.OnInteract += HandleRemoveInteractiveRotatable;
+        weedRootInstance.OnRemove += HandleOnRemove;
         return weedRootInstance;
     }
-    private void HandleRemoveInteractiveRotatable(InteractiveRotatable obj)
+    private void HandleOnInteract(InteractiveRotatable obj, Player player)
     {
-        IRotatable rotatable = obj;
-        if (rotatables.Contains(rotatable))
-            rotatables.Remove(rotatable);
+        if (obj == null)
+            SpawnSeedling(player);
+        else
+        {
+            // does player have water? -> water
+            // is seedling ready? -> harvest
+            // otherwise do nothing...
+        }
+    }
+    private void HandleOnRemove(InteractiveRotatable obj)
+    {
+        if (rotatables.Contains(obj))
+        {
+            rotatables.Remove(obj);
+            obj.gameObject.SetActive(false);
+            Destroy(obj);
+        }
     }
 
-    private InteractiveRotatable HandleSpawnSeedling(InteractiveRotatable obj)
+    private void SpawnSeedling(Player player)
     {
         Seedling seedling = Instantiate(seedlingPrefab, planetCenter);
+        seedling.transform.rotation = player.transform.rotation;
+        seedling.OnRemove += HandleHarvestSeedling;
         rotatables.Add(seedling);
-        seedling.transform.Rotate(Vector3.back, rand.Next(0, 360), Space.Self);
-        seedling.OnInteract += HandleHarvestSeedling;
-        return seedling;
     }
     private void HandleHarvestSeedling(InteractiveRotatable obj)
     {
@@ -100,5 +110,7 @@ public class GameManager : MonoBehaviour
     {
         foreach (IRotatable rotatable in rotatables)
             rotatable.AddRotation(rotationSpeed);
+
+        OnWeedGrow();
     }
 }

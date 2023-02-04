@@ -222,7 +222,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatingObject: {fileID: 2923845080101636478}
-  weedRootRenderer: {fileID: 2048332649551397251}
+  interactiveRotatableRenderer: {fileID: 2048332649551397251}
   buttonHint: {fileID: 415145387462166799}
 --- !u!1 &6032849575831078799
 GameObject:
@@ -241,7 +241,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &6393616796111686812
 RectTransform:
   m_ObjectHideFlags: 0

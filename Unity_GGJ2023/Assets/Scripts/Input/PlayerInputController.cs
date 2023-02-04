@@ -1,11 +1,8 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerInputController : MonoBehaviour
 {
-
     [SerializeField] private float maxSpeed = 5.0f;
     [SerializeField] private float currentSpeed = 0.0f;
     [SerializeField] private AnimationCurve SpeedAcc;
@@ -24,9 +21,9 @@ public class PlayerInputController : MonoBehaviour
         if (!Application.isFocused)
             return;
 
-        if(context.performed)
+        if (context.performed)
             OnMove(context.ReadValue<Vector2>()[0]);
-        if(context.canceled)
+        if (context.canceled)
             OnMove(0);
     }
     public void HandleAction(InputAction.CallbackContext context)

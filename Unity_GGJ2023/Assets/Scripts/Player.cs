@@ -82,11 +82,11 @@ namespace DefaultNamespace
             if (weedRootsWithinRange.Count <= 0 && seedlingsWithinRange.Count <= 0)
                 OnInteract(null);
 
-            foreach (var VARIABLE in seedlingsWithinRange)
-                throw new NotImplementedException();
+            foreach (var seedling in seedlingsWithinRange)
+                OnInteract(seedling);
 
-            foreach (InteractiveRotatable weedRoot in weedRootsWithinRange)
-                weedRoot.RipOut();
+            foreach (WeedRoot weedRoot in weedRootsWithinRange)
+                weedRoot.RipOut(25);
 
         }
         private void PrintWhatIsInRange()
@@ -101,7 +101,6 @@ namespace DefaultNamespace
         }
         private void HandleMove(float speed)
         {
-            //Debug.Log("Handle");
             currentSpeed = (int)(speed * maxSpeed);
         }
     }
