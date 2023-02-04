@@ -35,17 +35,18 @@ public class PlayerInputController : MonoBehaviour
 
     private void OnEnable()
     {   
+        inputMaster = new InputMaster();
         Debug.Log("Player on enable"); 
         playerInput = GetComponent<PlayerInput>();     
         Debug.Log("currentScheme: " + controlScheme + " playerInput: " + playerInput);
         playerInput.SwitchCurrentControlScheme(controlScheme);
-        // inputMaster.Enable();
-        // inputMaster.Player.Move.performed += HandleMove; //TODO WASD
-        // inputMaster.Player.Action.performed += HandleAction;
+        inputMaster.Enable();
+        inputMaster.Player.Move.performed += HandleMove; //TODO WASD
+        inputMaster.Player.Action.performed += HandleAction;
 
-        // //Keyboard
-        // inputMaster.Player.Move.canceled += HandleMoveStop;
-        // Debug.Log("InitPlayerInput");
+        //Keyboard
+        inputMaster.Player.Move.canceled += HandleMoveStop;
+        Debug.Log("InitPlayerInput");
     }
 
     private void OnDisable()
