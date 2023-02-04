@@ -8,7 +8,6 @@ namespace DefaultNamespace
         private int movementSpeed = 10;
 
         [SerializeField] private PlayerInputController playerInput;
-        [SerializeField] private int maxSpeed = 5;
         [SerializeField] private ColliderForwarder colliderForwarder;
         public event Action<InteractiveRotatable> OnInteract;
 
@@ -86,7 +85,7 @@ namespace DefaultNamespace
                 OnInteract(seedling);
 
             foreach (WeedRoot weedRoot in weedRootsWithinRange)
-                weedRoot.RipOut(25);
+                weedRoot.RipOut();
         }
         private void PrintWhatIsInRange()
         {
@@ -100,7 +99,7 @@ namespace DefaultNamespace
         }
         private void HandleMove(float speed)
         {
-            currentSpeed = (int)(speed * maxSpeed);
+            currentSpeed = (int)(speed * Configs.Instance.Get.maxSpeed);
         }
     }
 }

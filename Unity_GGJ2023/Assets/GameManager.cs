@@ -11,30 +11,22 @@ public class GameManager : MonoBehaviour
     [SerializeField] private WeedRoot weedRootPrefab;
     [SerializeField] private Seedling seedlingPrefab;
     [SerializeField] private Water waterPrefab;
-    [SerializeField] private int playerAmount = 2;
+
     [SerializeField] private PlayerSpawner playerSpawner;
-    [SerializeField] private float rotationSpeed = 0.01f;
-    [SerializeField] private int minNightAngle = 150;
-    [SerializeField] private int maxNightAngle = 320;
 
     private int minNightAngleAdd = 0;
     private int maxNightAngleAdd = 0;
-
-    public float SpawnInterval = 3.0f;
 
     private List<IRotatable> rotatables = new();
     private List<Player> players = new();
     private List<WeedRoot> weedRoots = new();
     private List<Seedling> seedlings = new();
-
-    private float timer = 0.0f;
-
     private Action OnWeedGrow = delegate { };
-
+    private float timer = 0.0f;
     void Start()
     {
         playerSpawner.OnPlayerSpawn += HandlePlayerSpawn;
-        InvokeRepeating("SpawnTick", 0f, SpawnInterval);
+        InvokeRepeating("SpawnTick", 0f, Configs.Instance.Get.spawnInterval);
         rotatables.Add(Instantiate(planetPrefab, planetCenter));
 
         InitWater(0f);
@@ -67,7 +59,7 @@ public class GameManager : MonoBehaviour
     {
         WeedRoot weedRootInstance = Instantiate(weedRootPrefab, planetCenter);
         weedRootInstance.Reset();
-        weedRootInstance.transform.Rotate(Vector3.back, rand.Next(minNightAngle + minNightAngleAdd, maxNightAngle + maxNightAngleAdd), Space.Self);
+        weedRootInstance.transform.Rotate(Vector3.back, rand.Next(Configs.Instance.Get.minNightAngle + minNightAngleAdd, Configs.Instance.Get.maxNightAngle + maxNightAngleAdd), Space.Self);
         rotatables.Add(weedRootInstance);
 
         weedRootInstance.OnRemove += HandleOnRemove;
@@ -109,7 +101,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         foreach (IRotatable rotatable in rotatables)
-            rotatable.AddRotation(rotationSpeed);
+            rotatable.AddRotation(Configs.Instance.Get.rotationSpeed);
 
         OnWeedGrow();
     }

@@ -275,7 +275,7 @@ MonoBehaviour:
   playerPrefab: {fileID: 7558842549697220729, guid: e49f536bd5dcc4ecab81b1a53d745e1f, type: 3}
   weedRootPrefab: {fileID: 1259612028395960755, guid: 305a8e43a53b9974b90470766e6a0796, type: 3}
   seedlingPrefab: {fileID: 882141277846986027, guid: 7daf23e256924e126a8805d51bcfdda4, type: 3}
-  waterPrefab: {fileID: 2697676052916024504, guid: eb580b57bfcfd7a459355f28e939e148, type: 3}
+  waterPrefab: {fileID: 0}
   playerAmount: 2
   playerSpawner: {fileID: 1530561335}
   rotationSpeed: 0.01
@@ -296,6 +296,51 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 2
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1335855807
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1335855809}
+  - component: {fileID: 1335855808}
+  m_Layer: 0
+  m_Name: Configs
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1335855808
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335855807}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dbb06b25098062da6b1f1b2a6552229d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  configurationsSo: {fileID: 11400000, guid: 1e24a3fd078f987eb8e8a1b1b14d50c9, type: 2}
+--- !u!4 &1335855809
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1335855807}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 3.3219848, y: 2.3506641, z: -0.0026999973}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1348160361
 PrefabInstance:
