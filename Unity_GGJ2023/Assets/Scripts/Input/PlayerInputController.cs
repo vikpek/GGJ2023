@@ -64,6 +64,7 @@ public class PlayerInputController : MonoBehaviour
             OnMove(context.ReadValue<Vector2>()[0]);
         if(context.canceled)
             OnMove(0);
+        OnAction();
     }
     public void HandleAction(InputAction.CallbackContext context)
     {
