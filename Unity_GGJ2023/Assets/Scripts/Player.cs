@@ -1,3 +1,6 @@
+using UnityEngine;
+using UnityEditor;
+
 namespace DefaultNamespace
 {
     public class Player : Rotatable
@@ -8,9 +11,40 @@ namespace DefaultNamespace
             AddRotation(movementSpeed);
         }
 
-        public void MoveCounterClockwise()
+        [SerializeField] private PlayerInput playerInput;
+        [SerializeField] private int maxSpeed = 5;
+        private string name = "";
+        private int currentSpeed;
+
+
+        void Awake()
+        {
+            playerInput = GetComponent<PlayerInput>();
+        }
+
+        void OnEnable()
+        {
+            playerInput.OnMove += HandleMove;
+        }
+
+        private void OnDisable()
+        {            
+            playerInput.OnMove -= HandleMove;
+        }
+
+        private void FixedUpdate()
+        {
+            AddRotation(currentSpeed);
+        }
+                public void MoveCounterClockwise()
         {
             AddRotation(movementSpeed);
         }
+        private void HandleMove(float speed)
+        {
+            //Debug.Log("Handle");
+            currentSpeed = (int)(speed * maxSpeed);
+        }
+
     }
 }
