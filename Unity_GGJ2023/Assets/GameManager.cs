@@ -33,7 +33,8 @@ public class GameManager : MonoBehaviour
         InitWater(180f);
     }
 
-    private void InitWater(float rotation){
+    private void InitWater(float rotation)
+    {
         Water water = Instantiate(waterPrefab, planetCenter);
         rotatables.Add(water);
         water.transform.Rotate(Vector3.back, rotation, Space.Self);
@@ -89,11 +90,11 @@ public class GameManager : MonoBehaviour
     private void SpawnSeedling(Player player)
     {
         Seedling seedling = Instantiate(seedlingPrefab, planetCenter);
-        seedling.transform.rotation = player.transform.rotation;
-        seedling.OnRemove += HandleHarvestSeedling;
+        seedling.rotatingObject.rotation = player.rotatingObject.rotation;
+        seedling.OnInteract += HandleInteractWithSeedling;
         rotatables.Add(seedling);
     }
-    private void HandleHarvestSeedling(InteractiveRotatable obj)
+    private void HandleInteractWithSeedling(InteractiveRotatable obj)
     {
         throw new NotImplementedException();
     }

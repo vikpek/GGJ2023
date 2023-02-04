@@ -7,6 +7,8 @@ public class InteractiveRotatable : Rotatable
 
     public event Action OnGrow = delegate { };
     public event Action<InteractiveRotatable> OnRemove = delegate { };
+    public event Action<InteractiveRotatable> OnInteract = delegate { };
+
     protected int growingState = 0;
     private void OnEnable()
     {
@@ -20,6 +22,11 @@ public class InteractiveRotatable : Rotatable
     protected void RaiseOnRemove(InteractiveRotatable interactiveRotatable)
     {
         OnRemove(interactiveRotatable);
+    }
+
+    protected void RaiseOnInteract(InteractiveRotatable interactiveRotatable)
+    {
+        OnInteract(interactiveRotatable);
     }
 
     public void Grow()
