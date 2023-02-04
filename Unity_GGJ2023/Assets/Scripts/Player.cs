@@ -19,6 +19,7 @@ namespace DefaultNamespace
 
         private string name = "";
         private int currentSpeed;
+        private WeedRoot[] StoodOnWeedRoot = null;
 
         void Awake()
         {
@@ -27,18 +28,22 @@ namespace DefaultNamespace
 
         void OnEnable()
         {
-            colliderForwarder.OnCollision += OnCollision;
+            colliderForwarder.OnCollision += OnForwardedCollision;
             playerInput.OnMove += HandleMove;
         }
 
         private void OnDisable()
         {
-            colliderForwarder.OnCollision -= OnCollision;
+            colliderForwarder.OnCollision -= OnForwardedCollision;
             playerInput.OnMove -= HandleMove;
         }
-        private void OnCollision(Collider obj)
+        private void OnForwardedCollision(Collider obj)
         {
+            WeedRoot[] weedRoot = obj.GetComponentsInParent<WeedRoot>();
+            if (weedRoot is null)
+                return;
 
+            StoodOnWeedRoot = weedRoot;
         }
 
         private void FixedUpdate()
