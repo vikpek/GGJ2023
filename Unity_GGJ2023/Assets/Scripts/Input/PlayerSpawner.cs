@@ -38,7 +38,7 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Spawn(PlayerInput input)
     {
-    	var player =obj.GetComponent<Player>();
+    	var player =input.GetComponent<Player>();
         OnPlayerSpawn(player);
         players.Add(player);
         Debug.Log("Spawn!");
