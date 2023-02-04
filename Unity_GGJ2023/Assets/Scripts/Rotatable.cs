@@ -5,6 +5,9 @@ public class Rotatable : MonoBehaviour, IRotatable
     public void AddRotation(float degrees)
     {
         rotatingObject.transform.Rotate(Vector3.back, degrees, Space.Self);
+    }    
+    public void Reset(){
+        rotatingObject.transform.SetPositionAndRotation(new Vector3(0,0,0), new Quaternion(0,0,0,0));
     }
 }
 public interface IRotatable

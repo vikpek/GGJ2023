@@ -12,6 +12,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private int playerAmount = 2;
     [SerializeField] private PlayerSpawner playerSpawner;
     [SerializeField] private float rotationSpeed = 0.01f;
+    [SerializeField] private int minNightAngle = 150;
+    [SerializeField] private int maxNightAngle = 320;
+
+    private int minNightAngleAdd = 0;
+    private int maxNightAngleAdd = 0;
+    
+
+    
+
 
     public float SpawnInterval = 3.0f;
 
@@ -26,11 +35,8 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         playerSpawner.OnPlayerSpawn += HandlePlayerSpawn;
-
-        InvokeRepeating("SpawnTick", 0f, 3f);
+        InvokeRepeating("SpawnTick", 0f, SpawnInterval);
         rotatables.Add(Instantiate(planetPrefab, planetCenter));
-
-
     }
     private void HandlePlayerSpawn(Player obj) => rotatables.Add(obj);
     void SpawnTick()
@@ -45,8 +51,9 @@ public class GameManager : MonoBehaviour
     private WeedRoot SpawnWeedRoot()
     {
         WeedRoot weedRootInstance = Instantiate(weedRootPrefab, planetCenter);
+        weedRootInstance.Reset();
+        weedRootInstance.transform.Rotate(Vector3.back, rand.Next(minNightAngle +minNightAngleAdd, maxNightAngle + maxNightAngleAdd), Space.Self);
         rotatables.Add(weedRootInstance);
-        weedRootInstance.transform.Rotate(Vector3.back, rand.Next(0, 360), Space.Self);
         weedRootInstance.OnRippedOut += HandleRippedOut;
         return weedRootInstance;
     }

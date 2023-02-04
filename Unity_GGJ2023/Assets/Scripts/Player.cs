@@ -11,8 +11,6 @@ namespace DefaultNamespace
         [SerializeField] private int maxSpeed = 5;
         [SerializeField] private ColliderForwarder colliderForwarder;
         public event Action<WeedRoot> IsOnWeedRoot;
-
-        private string name = "";
         private int currentSpeed;
         private List<WeedRoot> rootsWithinRange = new();
 

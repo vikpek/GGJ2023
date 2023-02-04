@@ -11,7 +11,8 @@ public class PlayerSpawner : MonoBehaviour
     [SerializeField] private int maxAmount;
     [SerializeField] private GameObject planetCenter;
     [SerializeField] private PlayerInputManager playerInputManager;
-
+    [SerializeField] private int minNightAngle;
+    [SerializeField] private int maxNightAngle;
     private List<Player> players = new();
     public List<Player> Players => players;
     public event Action<Player> OnPlayerSpawn;
