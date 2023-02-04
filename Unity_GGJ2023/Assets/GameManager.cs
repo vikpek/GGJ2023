@@ -1,5 +1,4 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
@@ -7,68 +6,54 @@ using Random = System.Random;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private Transform planetCenter;
-
     [SerializeField] private Planet planetPrefab;
     [SerializeField] private Player playerPrefab;
     [SerializeField] private WeedRoot weedRootPrefab;
     [SerializeField] private int playerAmount = 2;
+    [SerializeField] private PlayerSpawner playerSpawner;
+    [SerializeField] private float rotationSpeed = 0.01f;
 
-    private IRotatable planet;
+
+    public float SpawnInterval = 3.0f;
+
+    private List<IRotatable> rotatables = new();
     private List<Player> players = new();
     private List<WeedRoot> weedRoots = new();
 
+    private float timer = 0.0f;
+
+    private Action OnWeedGrow = delegate { };
+
     void Start()
     {
-        planet = Instantiate(planetPrefab, planetCenter);
-        // for (int i = 0; i < playerAmount; i++)
-        // {
-        //     players.Add(Instantiate(playerPrefab, planetCenter));
-        // }
+        playerSpawner.OnPlayerSpawn += HandlePlayerSpawn;
+        
+        InvokeRepeating("SpawnTick", 0f, 3f);
+        rotatables.Add(Instantiate(planetPrefab, planetCenter));
+        
+        
+    }
+    private void HandlePlayerSpawn(Player obj) => rotatables.Add(obj);
+    void SpawnTick()
+    {
+        OnWeedGrow();
+        var weedRoot = SpawnWeedRoot();
+        OnWeedGrow += weedRoot.Grow;
+        weedRoots.Add(weedRoot);
     }
 
     Random rand = new();
     private WeedRoot SpawnWeedRoot()
     {
-        var weedRootInstance = Instantiate(weedRootPrefab, planetCenter);
+        WeedRoot weedRootInstance = Instantiate(weedRootPrefab, planetCenter);
+        rotatables.Add(weedRootInstance);
         weedRootInstance.transform.Rotate(Vector3.back, rand.Next(0, 360), Space.Self);
         return weedRootInstance;
     }
 
-    public float interval = 1.0f;  // The interval in seconds
-    private float timer = 0.0f;  // The timer
-
     void Update()
     {
-        timer += Time.deltaTime;
-
-        if (timer >= interval)
-        {
-            weedRoots.Add(SpawnWeedRoot());
-            timer = 0.0f;
-
-        }
-
-
-        planet.AddRotation(1);
-
-        // if (Input.GetKey(KeyCode.RightArrow))
-        //     players[0].MoveClockwise();
-
-        // if (Input.GetKey(KeyCode.LeftArrow))
-        //     players[0].MoveCounterClockwise();
-
-        // if (Input.GetKey(KeyCode.A))
-        //     players[1].MoveClockwise();
-
-        // if (Input.GetKey(KeyCode.D))
-        //     players[1].MoveCounterClockwise();
-
-
-
-        // if(Input.GetKey(KeyCode.S))
-        //
-        //
-        // if(Input.GetKey(KeyCode.DownArrow))
-        //
+        foreach (IRotatable rotatable in rotatables)
+            rotatable.AddRotation(rotationSpeed);
     }
 }

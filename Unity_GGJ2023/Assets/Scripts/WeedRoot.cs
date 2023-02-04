@@ -1,26 +1,25 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
-public class WeedRoot : MonoBehaviour
+public class WeedRoot : Rotatable
 {
     [SerializeField] private SpriteRenderer weedRootRenderer;
-    
     public event Action OnGrow = delegate { };
     private int growingState = 0;
-    
-    
     private void OnEnable()
     {
-        OnGrow += HandleOnGrow;
+        OnGrow += Grow;
     }
     private void OnDisable()
     {
-        OnGrow -= HandleOnGrow;
+        OnGrow -= Grow;
     }
 
-    private void HandleOnGrow()
+    public void Grow()
     {
         growingState++;
-        weedRootRenderer.color = new Color(1,0,0, growingState);
+        int nextAlpha = growingState * 10;
+        if (nextAlpha > 255)
+            nextAlpha = 255;
+        weedRootRenderer.color = new Color(1, 0, 0, nextAlpha);
     }
 }
