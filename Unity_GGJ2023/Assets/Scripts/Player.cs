@@ -3,6 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace DefaultNamespace
 {
+    enum Cargo
+    {
+        Nothing,
+        Water,
+        Flower
+    }
     public class Player : Rotatable
     {
         private int movementSpeed = 10;
@@ -11,10 +17,15 @@ namespace DefaultNamespace
         [SerializeField] private ColliderForwarder colliderForwarder;
         public event Action<InteractiveRotatable> OnInteract;
 
+        private int waterLevel = 0;
+        private int flowerAmount = 0;
+
         private string name = "";
         private float currentSpeed;
+        private Cargo CurrentlyHolding;
         private List<WeedRoot> weedRootsWithinRange = new();
         private List<Seedling> seedlingsWithinRange = new();
+        private List<Seedling> waterWithinRange = new();
 
         void Awake()
         {
@@ -40,12 +51,14 @@ namespace DefaultNamespace
         {
             PerformFunctionOn(AddAndShow, collider, weedRootsWithinRange);
             PerformFunctionOn(AddAndShow, collider, seedlingsWithinRange);
+            PerformFunctionOn(AddAndShow, collider, waterWithinRange);
             PrintWhatIsInRange();
         }
         private void OnForwardedTriggerExit(Collider2D collider)
         {
             PerformFunctionOn(RemoveAndHide, collider, weedRootsWithinRange);
             PerformFunctionOn(RemoveAndHide, collider, seedlingsWithinRange);
+            PerformFunctionOn(RemoveAndHide, collider, waterWithinRange);
             PrintWhatIsInRange();
         }
         bool AddAndShow<T>(List<T> interactiveRotatables, T interactiveRotatable) where T : InteractiveRotatable
@@ -78,10 +91,15 @@ namespace DefaultNamespace
         }
         private void HandleAction()
         {
-            if (weedRootsWithinRange.Count <= 0 && seedlingsWithinRange.Count <= 0)
+            if (weedRootsWithinRange.Count <= 0 &&
+                seedlingsWithinRange.Count <= 0 &&
+                waterWithinRange.Count <= 0)
                 OnInteract(null);
 
             foreach (var seedling in seedlingsWithinRange)
+                OnInteract(seedling);
+
+            foreach (var seedling in waterWithinRange)
                 OnInteract(seedling);
 
             foreach (WeedRoot weedRoot in weedRootsWithinRange)
@@ -101,6 +119,28 @@ namespace DefaultNamespace
         {
             currentSpeed = (speed * Configs.Instance.Get.maxSpeed);
             //Debug.Log("HandleMove speed: " + speed + " currentSpeed: " + currentSpeed);
+        }
+        public void AddWater()
+        {
+            CurrentlyHolding = Cargo.Water;
+            waterLevel++;
+        }
+        public bool HasWater() => waterLevel > 0;
+        public void UseWater()
+        {
+            CurrentlyHolding = Cargo.Nothing;
+            waterLevel = 0;
+        }
+        public void AddFlower()
+        {
+            CurrentlyHolding = Cargo.Flower;
+            flowerAmount++;
+        }
+        public bool HasFlower() => flowerAmount > 0;
+        public void UseFlower()
+        {
+            CurrentlyHolding = Cargo.Nothing;
+            flowerAmount = 0;
         }
     }
 }

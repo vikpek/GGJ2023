@@ -38,8 +38,8 @@ public class GameManager : MonoBehaviour
         Water water = Instantiate(waterPrefab, planetCenter);
         rotatables.Add(water);
         water.transform.Rotate(Vector3.back, rotation, Space.Self);
-        //seedling.OnInteract += HandleHarvestSeedling;
     }
+
     private void HandlePlayerSpawn(Player obj)
     {
         obj.OnInteract += delegate(InteractiveRotatable rotatable)
@@ -72,9 +72,17 @@ public class GameManager : MonoBehaviour
             SpawnSeedling(player);
         else
         {
-            // does player have water? -> water
-            // is seedling ready? -> harvest
-            // otherwise do nothing...
+            switch (obj)
+            {
+                case Water water:
+                    player.AddWater();
+                    break;
+                case Seedling seedling:
+                    if(Seedling.IsReadyToHarvest)
+                        player.AddFlower();
+                    break;
+
+            }
         }
     }
     private void HandleOnRemove(InteractiveRotatable obj)
