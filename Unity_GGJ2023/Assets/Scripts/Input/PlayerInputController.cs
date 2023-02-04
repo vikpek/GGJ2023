@@ -51,24 +51,25 @@ public class PlayerInputController : MonoBehaviour
         inputMaster.Player.Move.canceled -= HandleMoveStop;
     }
 
-    private void HandleMove(InputAction.CallbackContext context)
+    public void HandleMove(InputAction.CallbackContext context)
     {
         //Debug.Log($"HandleMove Trigger. context:{context.valueType}, moveInput:{context.ReadValue<Vector2>()}");
         if (!Application.isFocused)
             return;
 
         Debug.Log($"Player {playerId} OnMove!");
-
-        OnMove(context.ReadValue<Vector2>()[0]);
-
+        if(context.performed)
+            OnMove(context.ReadValue<Vector2>()[0]);
+        if(context.canceled)
+            OnMove(0);
     }
-    private void HandleAction(InputAction.CallbackContext context)
+    public void HandleAction(InputAction.CallbackContext context)
     {
         //Debug.Log($"HandleMove Trigger. context:{context.valueType}, moveInput:{context.ReadValue<Vector2>()}");
         if (!Application.isFocused)
             return;
     }
-    private void HandleMoveStop(InputAction.CallbackContext context)
+    public void HandleMoveStop(InputAction.CallbackContext context)
     {
         OnMove(0);
     }
@@ -80,11 +81,11 @@ public class PlayerInputController : MonoBehaviour
         this.playerInput = input;
         this.gamepadId = gamepadId;
 
-        inputMaster = new InputMaster();
+        //inputMaster = new InputMaster();
         Debug.Log("Player on enable, gamepadId: " + gamepadId);   
         Debug.Log("currentScheme: " + controlScheme + " actionMap:"+playerInput.currentActionMap);
         //playerInput.ActivateInput();
-        inputMaster.Enable();
+        //inputMaster.Enable();
         
         // switch (controlScheme)
         // {
@@ -105,11 +106,11 @@ public class PlayerInputController : MonoBehaviour
         // }
         // playerInput.neverAutoSwitchControlSchemes = true;
         
-        inputMaster.Player.Move.performed += HandleMove; //TODO WASD
-        inputMaster.Player.Action.performed += HandleAction;
+        // inputMaster.Player.Move.performed += HandleMove; //TODO WASD
+        // inputMaster.Player.Action.performed += HandleAction;
 
-        //Keyboard
-        inputMaster.Player.Move.canceled += HandleMoveStop;
+        // //Keyboard
+        // inputMaster.Player.Move.canceled += HandleMoveStop;
         Debug.Log("InitPlayerInput");
 
     }
