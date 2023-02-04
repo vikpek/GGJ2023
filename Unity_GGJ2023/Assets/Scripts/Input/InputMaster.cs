@@ -139,7 +139,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""f09f2c0a-3d14-4e9d-83f6-2281785143b4"",
                     ""path"": ""<Keyboard>/downArrow"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard2"",
                     ""action"": ""Action"",
@@ -150,7 +150,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""c9e73dd4-eed9-4c2d-82ef-13e2a40838eb"",
                     ""path"": ""<Keyboard>/s"",
-                    ""interactions"": """",
+                    ""interactions"": ""Press"",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Action"",
@@ -595,7 +595,7 @@ public partial class @InputMaster : IInputActionCollection2, IDisposable
             ""devices"": [
                 {
                     ""devicePath"": ""<Gamepad>"",
-                    ""isOptional"": false,
+                    ""isOptional"": true,
                     ""isOR"": false
                 }
             ]

@@ -276,7 +276,7 @@ MonoBehaviour:
   weedRootPrefab: {fileID: 2923845080239428500, guid: 305a8e43a53b9974b90470766e6a0796, type: 3}
   playerAmount: 2
   playerSpawner: {fileID: 1530561335}
-  rotationSpeed: 0.2
+  rotationSpeed: 0.01
   SpawnInterval: 3
 --- !u!4 &765878451
 Transform:
@@ -368,7 +368,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   minAmount: 0
-  maxAmount: 0
+  maxAmount: 5
   planetCenter: {fileID: 1902996961}
   playerInputManager: {fileID: 1530561336}
 --- !u!114 &1530561336
@@ -384,7 +384,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_NotificationBehavior: 3
-  m_MaxPlayerCount: 2
+  m_MaxPlayerCount: -1
   m_AllowJoining: 1
   m_JoinBehavior: 0
   m_PlayerJoinedEvent:

@@ -39,8 +39,10 @@ public class PlayerInputController : MonoBehaviour
         Debug.Log("Player on enable"); 
         playerInput = GetComponent<PlayerInput>();     
         Debug.Log("currentScheme: " + controlScheme + " playerInput: " + playerInput);
-        playerInput.SwitchCurrentControlScheme(controlScheme);
+        playerInput.ActivateInput();
+        Debug.Log("Active? " + playerInput.inputIsActive + " - " + playerInput.active + " - " + playerInput.isActiveAndEnabled);
         inputMaster.Enable();
+        //playerInput.SwitchCurrentControlScheme(controlScheme, playerInput.devices);
         inputMaster.Player.Move.performed += HandleMove; //TODO WASD
         inputMaster.Player.Action.performed += HandleAction;
 
