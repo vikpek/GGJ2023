@@ -3,7 +3,6 @@ using TMPro;
 using UnityEngine;
 public class InteractiveRotatable : Rotatable
 {
-    [SerializeField] protected SpriteRenderer interactiveRotatableRenderer;
     [SerializeField] protected TMP_Text buttonHint;
 
     public event Action OnGrow = delegate { };

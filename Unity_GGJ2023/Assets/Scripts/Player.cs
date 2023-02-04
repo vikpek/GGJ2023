@@ -87,7 +87,6 @@ namespace DefaultNamespace
 
             foreach (WeedRoot weedRoot in weedRootsWithinRange)
                 weedRoot.RipOut(25);
-
         }
         private void PrintWhatIsInRange()
         {
