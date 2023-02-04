@@ -381,12 +381,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 01c3b49d01d0f343bb9d30e37cd7f536, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  planetCenter: {fileID: 0}
+  planetCenter: {fileID: 1902996962}
   planetPrefab: {fileID: 6137684974316319045, guid: 3406685e3acfb0f268868e786591fedd, type: 3}
   playerPrefab: {fileID: 7558842549697220729, guid: e49f536bd5dcc4ecab81b1a53d745e1f, type: 3}
   weedRootPrefab: {fileID: 2923845080239428500, guid: 305a8e43a53b9974b90470766e6a0796, type: 3}
   playerAmount: 2
-  interval: 1
+  playerSpawner: {fileID: 1530561335}
+  rotationSpeed: 1
+  SpawnInterval: 3
 --- !u!4 &765878451
 Transform:
   m_ObjectHideFlags: 0

@@ -161,4 +161,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4bfda4bac9b9fd293859805222e9ef96, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  rotatingObject: {fileID: 2923845080101636478}
   weedRootRenderer: {fileID: 2923845078523530111}
