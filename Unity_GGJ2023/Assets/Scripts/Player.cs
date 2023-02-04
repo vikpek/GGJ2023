@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEditor;
 
@@ -13,6 +14,10 @@ namespace DefaultNamespace
 
         [SerializeField] private PlayerInput playerInput;
         [SerializeField] private int maxSpeed = 5;
+        [SerializeField] private ColliderForwarder colliderForwarder;
+
+        public event Action<WeedRoot> IsOnWeedRoot;
+
         private string name = "";
         private int currentSpeed;
 
@@ -24,12 +29,18 @@ namespace DefaultNamespace
 
         void OnEnable()
         {
+            colliderForwarder.OnCollision += OnCollision;
             playerInput.OnMove += HandleMove;
         }
 
         private void OnDisable()
-        {            
+        {
+            colliderForwarder.OnCollision -= OnCollision;
             playerInput.OnMove -= HandleMove;
+        }
+        private void OnCollision(Collider obj)
+        {
+
         }
 
         private void FixedUpdate()
@@ -45,6 +56,7 @@ namespace DefaultNamespace
             //Debug.Log("Handle");
             currentSpeed = (int)(speed * maxSpeed);
         }
+
 
     }
 }

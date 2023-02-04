@@ -11,8 +11,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private WeedRoot weedRootPrefab;
     [SerializeField] private int playerAmount = 2;
     [SerializeField] private PlayerSpawner playerSpawner;
-
-    [SerializeField] private int rotationSpeed = 1;
+    [SerializeField] private float rotationSpeed = 0.01f;
 
 
     public float SpawnInterval = 3.0f;
