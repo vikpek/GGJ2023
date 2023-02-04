@@ -98,9 +98,8 @@ public class PlayerInputController : MonoBehaviour
         while (elapsedTime < curveDuration)
         {
             //Debug.Log("AccelerationFade while, curvePointer: " + curvePointer + ", animationCurveValue: " + animationCurveValue);
-
             elapsedTime += Time.deltaTime; //fixedDelta?
-            Debug.Log("AccelerationFade while, elapsed Time:" + elapsedTime + " curveDuration: " + curveDuration + " /= " + (elapsedTime / curveDuration));
+            //Debug.Log("AccelerationFade while, elapsed Time:" + elapsedTime + " curveDuration: " + curveDuration + " /= " + (elapsedTime / curveDuration));
             curvePointer += (Time.deltaTime / curveDuration);
             animationCurveValue = SpeedAcc.Evaluate(curvePointer);
             OnMove(animationCurveValue * multiplier);
@@ -135,9 +134,8 @@ public class PlayerInputController : MonoBehaviour
         while (elapsedTime < curveDuration)
         {
             //Debug.Log("AccelerationFade while, curvePointer: " + curvePointer + ", animationCurveValue: " + animationCurveValue);
-
             elapsedTime += Time.deltaTime; //fixedDelta?
-            Debug.Log("SlowDownFade while, elapsed Time:" + elapsedTime + " curveDuration: " + curveDuration + " /= " + (elapsedTime / curveDuration));
+            //Debug.Log("SlowDownFade while, elapsed Time:" + elapsedTime + " curveDuration: " + curveDuration + " /= " + (elapsedTime / curveDuration));
             curvePointer -= (Time.deltaTime / curveDuration);
             animationCurveValue = SpeedAcc.Evaluate(curvePointer);
             OnMove(animationCurveValue * multiplier);
