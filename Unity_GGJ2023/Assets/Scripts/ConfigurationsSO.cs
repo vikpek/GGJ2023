@@ -14,6 +14,7 @@ public class ConfigurationsSO : ScriptableObject
 
     public int playerAmount = 2;
     public int maxSpeed = 5;
+    public float speedFadeTime = 0.4f;
 
     public float spawnInterval = 3.0f;
 

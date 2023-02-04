@@ -5,12 +5,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 public class PlayerInputController : MonoBehaviour
 {
-
-    [SerializeField] private float maxSpeed = 5.0f;
-    [SerializeField] private float currentSpeed = 0.0f;
     [SerializeField] private AnimationCurve SpeedAcc;
-    [SerializeField] private float curveSteps = 0.01f;
-    [SerializeField] private float curveDuration = 10f;
     public Action OnAction = delegate { };
     public Action<float> OnMove = delegate { };
 
@@ -19,6 +14,7 @@ public class PlayerInputController : MonoBehaviour
     private bool inSpeedUp = false;
     private bool inSlowDown = false;
     private bool isRunningLeft = false;
+    private float speedUpTimer = 0.0f;
 
     private int playerId = 0;
 
@@ -93,17 +89,17 @@ public class PlayerInputController : MonoBehaviour
             yield break;
         }
         inSpeedUp = true;
-        float elapsedTime = 0f;
+        float elapsedTime = curvePointer*Configs.Instance.Get.speedFadeTime;
         float multiplier = isRunningLeft ? -1f : 1f;
-        while (elapsedTime < curveDuration)
+        while (elapsedTime < Configs.Instance.Get.speedFadeTime)
         {
             //Debug.Log("AccelerationFade while, curvePointer: " + curvePointer + ", animationCurveValue: " + animationCurveValue);
             elapsedTime += Time.deltaTime; //fixedDelta?
-            //Debug.Log("AccelerationFade while, elapsed Time:" + elapsedTime + " curveDuration: " + curveDuration + " /= " + (elapsedTime / curveDuration));
-            curvePointer += (Time.deltaTime / curveDuration);
+            //Debug.Log("AccelerationFade while, elapsed Time:" + elapsedTime + " curveDuration: " + Configs.Instance.Get.speedFadeTime + " /= " + (elapsedTime / curveDuration));
+            curvePointer += (Time.deltaTime / Configs.Instance.Get.speedFadeTime);
             animationCurveValue = SpeedAcc.Evaluate(curvePointer);
             OnMove(animationCurveValue * multiplier);
-            if (curvePointer == 1)
+            if (curvePointer == 1f)
             {
                 inSpeedUp = false;
                 yield break;
@@ -129,17 +125,17 @@ public class PlayerInputController : MonoBehaviour
             yield break;
         }
         inSlowDown = true;
-        float elapsedTime = 0f;
+        float elapsedTime = Configs.Instance.Get.speedFadeTime - curvePointer*Configs.Instance.Get.speedFadeTime;
         float multiplier = isRunningLeft ? -1f : 1f;
-        while (elapsedTime < curveDuration)
+        while (elapsedTime < Configs.Instance.Get.speedFadeTime)
         {
             //Debug.Log("AccelerationFade while, curvePointer: " + curvePointer + ", animationCurveValue: " + animationCurveValue);
             elapsedTime += Time.deltaTime; //fixedDelta?
-            //Debug.Log("SlowDownFade while, elapsed Time:" + elapsedTime + " curveDuration: " + curveDuration + " /= " + (elapsedTime / curveDuration));
-            curvePointer -= (Time.deltaTime / curveDuration);
+            //Debug.Log("SlowDownFade while, elapsed Time:" + elapsedTime + " curveDuration: " + Configs.Instance.Get.speedFadeTime + " /= " + (elapsedTime / Configs.Instance.Get.speedFadeTime));
+            curvePointer -= (Time.deltaTime / Configs.Instance.Get.speedFadeTime);
             animationCurveValue = SpeedAcc.Evaluate(curvePointer);
             OnMove(animationCurveValue * multiplier);
-            if (curvePointer == 0)
+            if (curvePointer == 0f)
             {
                 inSlowDown = false;
                 yield break;
