@@ -15,6 +15,10 @@ public class PlayerSpawner : MonoBehaviour
     private List<Player> players = new();
     public List<Player> Players => players;
     public event Action<Player> OnPlayerSpawn;
+
+    private int gamepadId = 0;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -39,13 +43,20 @@ public class PlayerSpawner : MonoBehaviour
 
     private void Spawn(PlayerInput input)
     {
-        var player = input.GetComponent<Player>();
+    	var player = input.GetComponent<Player>();
         OnPlayerSpawn(player);
         players.Add(player);
         Debug.Log("Spawn!");
         Debug.Log($"Spawning Player {input.playerIndex}, {input.currentActionMap}, {input.currentControlScheme}, {input.currentControlScheme}");
         var pi = input.GetComponent<PlayerInputController>();
-        pi.InitPlayerInput(input.currentControlScheme, input.playerIndex, input);
+        if(input.currentControlScheme == "Gamepad")
+            gamepadId++;
+
+        
+
+        //input.name = "PlayerInput"+input.playerIndex;
+        pi.InitPlayerInput(input.currentControlScheme, input.playerIndex, gamepadId-1, input);
+        
     }
 
 
