@@ -20,10 +20,10 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         planet = Instantiate(planetPrefab, planetCenter);
-        for (int i = 0; i < playerAmount; i++)
-        {
-            players.Add(Instantiate(playerPrefab, planetCenter));
-        }
+        // for (int i = 0; i < playerAmount; i++)
+        // {
+        //     players.Add(Instantiate(playerPrefab, planetCenter));
+        // }
     }
 
     Random rand = new();
@@ -51,17 +51,17 @@ public class GameManager : MonoBehaviour
 
         planet.AddRotation(1);
 
-        if (Input.GetKey(KeyCode.RightArrow))
-            players[0].MoveClockwise();
+        // if (Input.GetKey(KeyCode.RightArrow))
+        //     players[0].MoveClockwise();
 
-        if (Input.GetKey(KeyCode.LeftArrow))
-            players[0].MoveCounterClockwise();
+        // if (Input.GetKey(KeyCode.LeftArrow))
+        //     players[0].MoveCounterClockwise();
 
-        if (Input.GetKey(KeyCode.A))
-            players[1].MoveClockwise();
+        // if (Input.GetKey(KeyCode.A))
+        //     players[1].MoveClockwise();
 
-        if (Input.GetKey(KeyCode.D))
-            players[1].MoveCounterClockwise();
+        // if (Input.GetKey(KeyCode.D))
+        //     players[1].MoveCounterClockwise();
 
 
 

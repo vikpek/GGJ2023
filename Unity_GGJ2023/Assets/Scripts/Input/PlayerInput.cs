@@ -33,6 +33,9 @@ public class PlayerInput : MonoBehaviour
         inputMaster.Enable();
         inputMaster.Player.Move.performed += HandleMove; //TODO WASD
         inputMaster.Player.Action.performed += HandleAction;
+
+        //Keyboard
+        inputMaster.Player.Move.canceled += HandleMoveStop;
         Debug.Log("OnEnable");
     }
 
@@ -40,6 +43,10 @@ public class PlayerInput : MonoBehaviour
     {
         inputMaster.Disable();
         inputMaster.Player.Move.performed -= HandleMove;
+        inputMaster.Player.Action.performed -= HandleAction;
+
+        //Keyboard
+        inputMaster.Player.Move.canceled -= HandleMoveStop;
     }
 
     private void HandleMove(InputAction.CallbackContext context)
@@ -56,5 +63,9 @@ public class PlayerInput : MonoBehaviour
         //Debug.Log($"HandleMove Trigger. context:{context.valueType}, moveInput:{context.ReadValue<Vector2>()}");
         if (!Application.isFocused)
             return;
+    }
+    private void HandleMoveStop(InputAction.CallbackContext context){  
+        Debug.Log("Cancelled");      
+        OnMove(0);
     }
 }

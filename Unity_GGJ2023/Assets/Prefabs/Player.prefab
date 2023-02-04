@@ -80,6 +80,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatingObject: {fileID: 6137684974178593759}
+  playerInput: {fileID: 0}
+  maxSpeed: 5
 --- !u!114 &8297475875686338692
 MonoBehaviour:
   m_ObjectHideFlags: 0
