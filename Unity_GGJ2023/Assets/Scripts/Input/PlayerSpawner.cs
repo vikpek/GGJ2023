@@ -44,7 +44,7 @@ public class PlayerSpawner : MonoBehaviour
         Debug.Log("Spawn!");
         Debug.Log($"Spawning Player {input.playerIndex}, {input.currentActionMap}, {input.currentControlScheme}, {input.currentControlScheme}");
         var pi = input.GetComponent<PlayerInputController>();
-        pi.InitPlayerInput(input.currentControlScheme);
+        pi.InitPlayerInput(input.currentControlScheme, input.playerIndex, input);
     }
 
 

@@ -10,6 +10,8 @@ public class PlayerInputController : MonoBehaviour
     [SerializeField] private float currentSpeed = 0.0f;
     [SerializeField] private AnimationCurve SpeedAcc;
 
+    private int playerId = 0;
+
     public Action<float> OnMove = delegate { };
 
     private InputMaster inputMaster;
@@ -30,25 +32,12 @@ public class PlayerInputController : MonoBehaviour
         name = gameObject.GetInstanceID().ToString();
         Debug.Log("Created InputMaster " + name);
         //inputMaster = playerInput.; 
-        
+
     }
 
     private void OnEnable()
-    {   
-        inputMaster = new InputMaster();
-        Debug.Log("Player on enable"); 
-        playerInput = GetComponent<PlayerInput>();     
-        Debug.Log("currentScheme: " + controlScheme + " playerInput: " + playerInput);
-        playerInput.ActivateInput();
-        Debug.Log("Active? " + playerInput.inputIsActive + " - " + playerInput.active + " - " + playerInput.isActiveAndEnabled);
-        inputMaster.Enable();
-        //playerInput.SwitchCurrentControlScheme(controlScheme, playerInput.devices);
-        inputMaster.Player.Move.performed += HandleMove; //TODO WASD
-        inputMaster.Player.Action.performed += HandleAction;
+    {
 
-        //Keyboard
-        inputMaster.Player.Move.canceled += HandleMoveStop;
-        Debug.Log("InitPlayerInput");
     }
 
     private void OnDisable()
@@ -82,9 +71,37 @@ public class PlayerInputController : MonoBehaviour
         OnMove(0);
     }
 
-    public void InitPlayerInput(string currentControlScheme)
+    public void InitPlayerInput(string currentControlScheme, int playerId, PlayerInput input)
     {
         controlScheme = currentControlScheme;
-       
+        this.playerId = playerId;
+        this.playerInput = input;
+
+        inputMaster = new InputMaster();
+        Debug.Log("Player on enable");
+        //playerInput = GetComponent<PlayerInput>();     
+        Debug.Log("currentScheme: " + controlScheme + " playerInput: " + playerInput);
+        playerInput.ActivateInput();
+        inputMaster.Enable();
+        switch (controlScheme)
+        {
+            case "Keyboard2":
+                playerInput.SwitchCurrentControlScheme(controlScheme, Keyboard.current);
+                break;
+            case "Keyboard&Mouse":
+
+                playerInput.SwitchCurrentControlScheme(controlScheme, Keyboard.current);
+                break;
+            case "Gamepad":
+                playerInput.SwitchCurrentControlScheme(controlScheme, Gamepad.all[playerId]);
+                break;
+        }
+        inputMaster.Player.Move.performed += HandleMove; //TODO WASD
+        inputMaster.Player.Action.performed += HandleAction;
+
+        //Keyboard
+        inputMaster.Player.Move.canceled += HandleMoveStop;
+        Debug.Log("InitPlayerInput");
+
     }
 }
