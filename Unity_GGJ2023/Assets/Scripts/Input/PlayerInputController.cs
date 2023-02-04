@@ -19,7 +19,6 @@ public class PlayerInputController : MonoBehaviour
     private InputMaster inputMaster;
     private PlayerInput playerInput;
 
-
     public void HandleMove(InputAction.CallbackContext context)
     {
         if (!Application.isFocused)
@@ -29,7 +28,6 @@ public class PlayerInputController : MonoBehaviour
             OnMove(context.ReadValue<Vector2>()[0]);
         if(context.canceled)
             OnMove(0);
-        OnAction();
     }
     public void HandleAction(InputAction.CallbackContext context)
     {

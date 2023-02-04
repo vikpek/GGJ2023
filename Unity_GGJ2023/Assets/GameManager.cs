@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using DefaultNamespace;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Random = System.Random;
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Planet planetPrefab;
     [SerializeField] private Player playerPrefab;
     [SerializeField] private WeedRoot weedRootPrefab;
+    [SerializeField] private Seedling seedlingPrefab;
     [SerializeField] private int playerAmount = 2;
     [SerializeField] private PlayerSpawner playerSpawner;
     [SerializeField] private float rotationSpeed = 0.01f;
@@ -27,6 +29,7 @@ public class GameManager : MonoBehaviour
     private List<IRotatable> rotatables = new();
     private List<Player> players = new();
     private List<WeedRoot> weedRoots = new();
+    private List<Seedling> seedlings = new();
 
     private float timer = 0.0f;
 
@@ -38,7 +41,11 @@ public class GameManager : MonoBehaviour
         InvokeRepeating("SpawnTick", 0f, SpawnInterval);
         rotatables.Add(Instantiate(planetPrefab, planetCenter));
     }
-    private void HandlePlayerSpawn(Player obj) => rotatables.Add(obj);
+    private void HandlePlayerSpawn(Player obj)
+    {
+        obj.OnInteract += HandleRemoveInteractiveRotatable;
+        rotatables.Add(obj);
+    }
     void SpawnTick()
     {
         OnWeedGrow();
@@ -54,14 +61,30 @@ public class GameManager : MonoBehaviour
         weedRootInstance.Reset();
         weedRootInstance.transform.Rotate(Vector3.back, rand.Next(minNightAngle +minNightAngleAdd, maxNightAngle + maxNightAngleAdd), Space.Self);
         rotatables.Add(weedRootInstance);
-        weedRootInstance.OnRippedOut += HandleRippedOut;
+
+        weedRootInstance.OnInteract += HandleRemoveInteractiveRotatable;
+        weedRootInstance.transform.Rotate(Vector3.back, rand.Next(0, 360), Space.Self);
+        weedRootInstance.OnInteract += HandleRemoveInteractiveRotatable;
         return weedRootInstance;
     }
-    private void HandleRippedOut(WeedRoot obj)
+    private void HandleRemoveInteractiveRotatable(InteractiveRotatable obj)
     {
         IRotatable rotatable = obj;
         if (rotatables.Contains(rotatable))
             rotatables.Remove(rotatable);
+    }
+
+    private InteractiveRotatable HandleSpawnSeedling(InteractiveRotatable obj)
+    {
+        Seedling seedling = Instantiate(seedlingPrefab, planetCenter);
+        rotatables.Add(seedling);
+        seedling.transform.Rotate(Vector3.back, rand.Next(0, 360), Space.Self);
+        seedling.OnInteract += HandleHarvestSeedling;
+        return seedling;
+    }
+    private void HandleHarvestSeedling(InteractiveRotatable obj)
+    {
+        throw new NotImplementedException();
     }
 
     void Update()

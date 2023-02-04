@@ -10,9 +10,12 @@ namespace DefaultNamespace
         [SerializeField] private PlayerInputController playerInput;
         [SerializeField] private int maxSpeed = 5;
         [SerializeField] private ColliderForwarder colliderForwarder;
-        public event Action<WeedRoot> IsOnWeedRoot;
+        public event Action<InteractiveRotatable> OnInteract;
+
+        private string name = "";
         private int currentSpeed;
-        private List<WeedRoot> rootsWithinRange = new();
+        private List<WeedRoot> weedRootsWithinRange = new();
+        private List<Seedling> seedlingsWithinRange = new();
 
         void Awake()
         {
@@ -36,45 +39,60 @@ namespace DefaultNamespace
         }
         private void OnForwardedTriggerEnterForward(Collider2D collider)
         {
-            WeedRoot[] weedRoots = collider.GetComponentsInParent<WeedRoot>();
-            if (weedRoots is null)
-                return;
-
-            foreach (WeedRoot weedRoot in weedRoots)
-            {
-                rootsWithinRange.Add(weedRoot);
-                weedRoot.ShowActionButtonHint();
-
-            }
-            PrintCurrentRootsInRange();
+            PerformFunctionOn(AddAndShow, collider, weedRootsWithinRange);
+            PerformFunctionOn(AddAndShow, collider, seedlingsWithinRange);
+            PrintWhatIsInRange();
         }
         private void OnForwardedTriggerExit(Collider2D collider)
         {
-            WeedRoot[] weedRoots = collider.GetComponentsInParent<WeedRoot>();
-            if (weedRoots is null)
+            PerformFunctionOn(RemoveAndHide, collider, weedRootsWithinRange);
+            PerformFunctionOn(RemoveAndHide, collider, seedlingsWithinRange);
+            PrintWhatIsInRange();
+        }
+        bool AddAndShow<T>(List<T> interactiveRotatables, T interactiveRotatable) where T : InteractiveRotatable
+        {
+            if (!interactiveRotatables.Contains(interactiveRotatable))
+            {
+                interactiveRotatables.Add(interactiveRotatable);
+                interactiveRotatable.ShowActionButtonHint();
+                return true;
+            }
+            return false;
+        }
+        bool RemoveAndHide<T>(List<T> interactiveRotatables, T interactiveRotatable) where T : InteractiveRotatable
+        {
+            if (interactiveRotatables.Contains(interactiveRotatable))
+            {
+                interactiveRotatables.Remove(interactiveRotatable);
+                interactiveRotatable.HideActionButtonHint();
+            }
+            return true;
+        }
+        private void PerformFunctionOn<T>(Func<List<T>, T, bool> func, Collider2D collider, List<T> interactiveRotatables) where T : InteractiveRotatable
+        {
+            T[] interactableRotatable = collider.GetComponentsInParent<T>();
+            if (interactableRotatable is null)
                 return;
 
-            foreach (WeedRoot weedRoot in weedRoots)
-            {
-                if (rootsWithinRange.Contains(weedRoot))
-                {
-                    rootsWithinRange.Remove(weedRoot);
-                    weedRoot.HideActionButtonHint();
-                }
-            }
-
-            PrintCurrentRootsInRange();
+            foreach (T interactiveRotatable in interactableRotatable)
+                func(interactiveRotatables, interactiveRotatable);
         }
         private void HandleAction()
         {
-            foreach (WeedRoot weedRoot in rootsWithinRange)
-            {
+            if (weedRootsWithinRange.Count <= 0 && seedlingsWithinRange.Count <= 0)
+                OnInteract(null);
+
+            foreach (var VARIABLE in seedlingsWithinRange)
+                throw new NotImplementedException();
+
+            foreach (InteractiveRotatable weedRoot in weedRootsWithinRange)
                 weedRoot.RipOut();
-            }
+
         }
-        private void PrintCurrentRootsInRange()
+        private void PrintWhatIsInRange()
         {
-            Debug.Log(string.Join(" ", rootsWithinRange));
+            Debug.Log(string.Join(" ", weedRootsWithinRange));
+            Debug.Log(string.Join(" ", seedlingsWithinRange));
         }
 
         private void FixedUpdate()
