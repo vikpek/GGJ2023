@@ -224,8 +224,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   rotatingObject: {fileID: 2923845080101636478}
-  interactiveRotatableRenderer: {fileID: 2048332649551397251}
   buttonHint: {fileID: 415145387462166799}
+  interactiveRotatableRenderer:
+  - {fileID: 2048332649551397251}
+  - {fileID: 1678507318279626723}
+  particleSystem: {fileID: 7089612871621158027}
 --- !u!1 &6032849575831078799
 GameObject:
   m_ObjectHideFlags: 0
@@ -542,5 +545,10 @@ PrefabInstance:
 --- !u!4 &1076873955754783933 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 9222406982069197498, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
+  m_PrefabInstance: {fileID: 8146239189826088455}
+  m_PrefabAsset: {fileID: 0}
+--- !u!198 &7089612871621158027 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 1400087568602040972, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
   m_PrefabInstance: {fileID: 8146239189826088455}
   m_PrefabAsset: {fileID: 0}
