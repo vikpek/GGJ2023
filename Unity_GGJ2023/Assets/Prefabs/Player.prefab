@@ -710,6 +710,7 @@ MonoBehaviour:
   - {fileID: 8436617489869926405}
   aoeColliderForwarder: {fileID: 1588760675056995975}
   aoeRadius: {fileID: 6527934905617210270}
+  aoeParticleSystem: {fileID: 1199945680531911887}
   CurrentlyHolding: 0
 --- !u!114 &8297475875686338692
 MonoBehaviour:
@@ -1573,6 +1574,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5f17c0a04497615419e14120b8c91598, type: 3}
+--- !u!198 &1199945680531911887 stripped
+ParticleSystem:
+  m_CorrespondingSourceObject: {fileID: 6680789858495587744, guid: 5f17c0a04497615419e14120b8c91598, type: 3}
+  m_PrefabInstance: {fileID: 5481442356357435759}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7265649368596227711 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2937819602392921872, guid: 5f17c0a04497615419e14120b8c91598, type: 3}

@@ -137,7 +137,6 @@ public class GameManager : MonoBehaviour
                     if (player.HasFlower())
                     {
                         player.AoeBomb();
-                        player.UseFlower();
                     }
                     else
                     {
@@ -261,8 +260,10 @@ public class GameManager : MonoBehaviour
         }
         OnWeedGrow();
         timeRemaining -= Time.deltaTime;
-        if (timeRemaining <= 0)
+        if (timeRemaining <= 0){
+            AudioManager.Instance.PlayAudio(ClipPurpose.WinningSound);
             SceneHelper.Instance.GoToVictory();
+        }
 
     }
 }

@@ -49,6 +49,10 @@ public class AudioManager : MonoBehaviour
 
     public void PlayMusic(MusicPurpose musicPurpose, bool loop = true)
     {
+        if(musicSource.isPlaying){
+            Debug.Log("MusicSource is playing, switching to " + musicPurpose);
+            //TODO 2 sources fadein & out
+        }
         //TODO FADE
         AudioClip clip = musicCollections.Where(x => x.MusicPurpose == musicPurpose).Select(x => x.AudioClip).FirstOrDefault();
         if (clip == null)
@@ -64,7 +68,10 @@ public enum ClipPurpose
     Planting,
     Watering,
     Gathering,
-    Stomping
+    Stomping,
+    WinningSound,
+    GameOverSound,
+    RootSound
 }
 [Serializable]
 public enum MusicPurpose
