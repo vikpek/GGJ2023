@@ -4,15 +4,12 @@ using UnityEngine;
 namespace DefaultNamespace
 {
     public class JumpToGame : MonoBehaviour
-    {
-        private void Start()
+    {       
+        [SerializeField] TMPro.TMP_Text text;
+        public void GoToGame()
         {
-            StartCoroutine(ContinueToGame());
-        }
-        private IEnumerator ContinueToGame()
-        {
-            yield return new WaitForSeconds(2);
-            SceneHelper.Instance.GoToGame();
+            text.text = "Loading...";
+;            SceneHelper.Instance.GoToGame();
         }
     }
 }
