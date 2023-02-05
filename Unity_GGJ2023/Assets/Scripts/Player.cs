@@ -47,9 +47,12 @@ namespace DefaultNamespace
         private float RemainingInteractionTime = 0f;
         private float FullInteractionTime = 0f;
 
+        private bool inInteractionDelay = false;
+
+
         private State state = State.None;
 
-        public enum State {None, Planting, Stomping, Harvesting};
+        public enum State { None, Planting, Stomping, Harvesting };
 
 
         void Awake()
@@ -90,7 +93,9 @@ namespace DefaultNamespace
 
             animator = playerSkins[playerId].Animator;
             playerSkins[playerId].gameObject.SetActive(true);
+            StartCoroutine("InteractionDelay");
         }
+        public void StartInteractionDelay() => StartCoroutine("InteractionDelay");
         private void OnForwardedPlayerTriggerEnter(Collider2D collider)
         {
             PerformFunctionOn(AddAndShow, collider, weedRootsWithinRange);
@@ -142,53 +147,61 @@ namespace DefaultNamespace
         }
         private void HandleAction()
         {
-            Debug.Log($"HandleAction: weeds: {weedRootsWithinRange.Count} + seeds: {seedlingsWithinRange.Count}, water: {waterWithinRange.Count}");
+            if(inInteractionDelay)
+                return;
+
             if (weedRootsWithinRange.Count <= 0 &&
                 seedlingsWithinRange.Count <= 0 &&
                 waterWithinRange.Count <= 0)
             {
-                Debug.Log($"HandleAction: weeds: {weedRootsWithinRange.Count} + seeds: {seedlingsWithinRange.Count}, water: {waterWithinRange.Count}");
                 OnInteract(null);
+                StartCoroutine("InteractionDelay");
                 return;
             }
 
             if (weedRootsWithinRange.Count > 0)
             {
-                animator.SetTrigger("TriggerHit");
                 AudioManager.Instance.PlayAudio(ClipPurpose.Stomping);
             }
             else if (seedlingsWithinRange.Count > 0)
-                animator.SetBool("Watering", true);
+            {
+                AudioManager.Instance.PlayAudio(ClipPurpose.Planting);
+            }
 
             foreach (var seedling in seedlingsWithinRange)
             {
                 OnInteract(seedling);
+                StartCoroutine("InteractionDelay");
                 return;
             }
 
             foreach (var water in waterWithinRange)
             {
                 OnInteract(water);
+                StartCoroutine("InteractionDelay");
                 return;
             }
 
             foreach (WeedRoot weedRoot in weedRootsWithinRange)
             {
                 OnInteract(weedRoot);
+                StartCoroutine("InteractionDelay");
                 return;
             }
         }
 
-        public void RemoveWeedRoots(WeedRoot weedRoot){
-            Debug.Log("RemoveWeedRoot: " + weedRoot);
-            if(weedRootsWithinRange.Contains(weedRoot)){
+        public void RemoveWeedRoots(WeedRoot weedRoot)
+        {
+            if (weedRootsWithinRange.Contains(weedRoot))
+            {
                 weedRootsWithinRange.Remove(weedRoot);
             }
         }
 
-        public void RemoveSeedling(Seedling seedling){
-            Debug.Log("RemoveSeedling: " + seedling);
-            if(seedlingsWithinRange.Contains(seedling)){
+        public void RemoveSeedling(Seedling seedling)
+        {
+            if (seedlingsWithinRange.Contains(seedling))
+            {
                 seedlingsWithinRange.Remove(seedling);
             }
         }
@@ -250,6 +263,17 @@ namespace DefaultNamespace
             yield return null;
             if (aoeRadius != null)
                 aoeRadius.enabled = false;
+        }
+
+        private IEnumerator InteractionDelay()
+        {
+            float deltaTime = 0.0f;
+            inInteractionDelay = true;
+            while(deltaTime <= Configs.Instance.Get.interactionDelay){
+                deltaTime += Time.deltaTime;
+                yield return null;
+            }
+            inInteractionDelay = false;
         }
         public void PerformInteraction(float duration, InteractionType interactionType)
         {
