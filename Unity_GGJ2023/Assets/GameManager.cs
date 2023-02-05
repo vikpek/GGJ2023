@@ -38,6 +38,12 @@ public class GameManager : MonoBehaviour
         timeRemaining = Configs.Instance.Get.durationUntilWin;
         InitWater(0f);
         InitWater(180f);
+
+        InvokeRepeating("IncreaseDifficulty", Configs.Instance.Get.difficultyIncreaseDuration, Configs.Instance.Get.difficultyIncreaseDuration);
+    }
+    private void IncreaseDifficulty()
+    {
+        Configs.Instance.Get.spawnInterval -= Configs.Instance.Get.increaseDifficultyStep;
     }
 
     private void InitWater(float rotation)
