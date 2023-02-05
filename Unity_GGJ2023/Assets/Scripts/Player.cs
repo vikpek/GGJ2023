@@ -212,7 +212,7 @@ namespace DefaultNamespace
         {
             if (RemainingInteractionTime > 0)
             {
-                cargoImage.fillAmount = CalculationHelper.CalculatePercentage(RemainingInteractionTime, FullInteractionTime);
+                cargoImage.fillAmount = CalculationHelper.CalculatePercentageReverted(RemainingInteractionTime, FullInteractionTime);
                 RemainingInteractionTime -= Time.deltaTime;
             }
         }
