@@ -9,7 +9,7 @@ namespace DefaultNamespace
         public void RipOut()
         {
             growingState -= Configs.Instance.Get.ripOutStrength;
-            Debug.Log("RipOut, growingState = " +growingState);
+            Debug.Log("RipOut, growingState = " + growingState);
             UpdateWeedRootState();
 
             if (growingState <= 0)
@@ -35,8 +35,11 @@ namespace DefaultNamespace
                 interactiveRotatableRenderer[i].material.SetFloat("_Progress", progressInPercent);
             }
 
-            // if (growingState > 60)
-            // particleSystem.emission= true;
+            if (progressInPercent > 0.6)
+            {
+                var partSystem  = particleSystem.emission;
+                partSystem.enabled = true;
+            }
 
             Debug.Log($"growing state {progressInPercent}");
             if (progressInPercent >= 1)

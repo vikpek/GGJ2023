@@ -17,6 +17,7 @@ public class ConfigurationsSO : ScriptableObject
     public float speedFadeTime = 0.4f;
 
     public float spawnInterval = 3.0f;
+    public float interactionDelay = 0.5f;
 
     public int ripOutStrength = 25;
     public int growingPercentageForVFXRootWarning = 60;
