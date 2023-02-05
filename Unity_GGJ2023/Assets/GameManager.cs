@@ -105,7 +105,7 @@ public class GameManager : MonoBehaviour
 
     private void HandleOnInteract(InteractiveRotatable obj, Player player)
     {
-        Debug.Log("HandleOnInteract obj:" + obj);
+        Debug.Log("HandleOnInteract obj:" + obj + " cargo: " + player.CurrentlyHolding);
         if (obj == null)
         {
             switch (player.CurrentlyHolding)
@@ -118,6 +118,7 @@ public class GameManager : MonoBehaviour
                     break;
                 case Cargo.Flower:
                     player.UseFlower();
+                    player.AoeBomb();
                     break;
             }
         }
@@ -149,7 +150,6 @@ public class GameManager : MonoBehaviour
                     {
                         weedRoot.RipOut();
                     }
-
                     break;
             }
         }

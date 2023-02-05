@@ -227,7 +227,7 @@ MonoBehaviour:
   interactiveRotatableRenderer:
   - {fileID: 2048332649551397251}
   - {fileID: 1678507318279626723}
-  particleSystem: {fileID: 7089612871621158027}
+  sparkles: {fileID: 7089612871621158027}
 --- !u!1 &6032849575831078799
 GameObject:
   m_ObjectHideFlags: 0
@@ -394,12 +394,12 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 9114221692346016616}
-  m_maskType: 0
   _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
+  m_hasFontAssetChanged: 0
+  m_renderer: {fileID: 9114221692346016616}
+  m_maskType: 0
 --- !u!1 &6120646063556291040
 GameObject:
   m_ObjectHideFlags: 0
@@ -492,12 +492,24 @@ PrefabInstance:
     m_TransformParent: {fileID: 2923845078523530110}
     m_Modifications:
     - target: {fileID: 1400087568602040972, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
-      propertyPath: EmissionModule.enabled
+      propertyPath: playOnAwake
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1400087568602040972, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 1685812563325038661, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
       propertyPath: m_Name
       value: VFX_root
+      objectReference: {fileID: 0}
+    - target: {fileID: 3477667098996820085, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
+      propertyPath: playOnAwake
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3477667098996820085, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
+      propertyPath: EmissionModule.enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9222406982069197498, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
       propertyPath: m_RootOrder

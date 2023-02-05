@@ -6,11 +6,9 @@ namespace DefaultNamespace
     public class WeedRoot : InteractiveRotatable
     {
         [SerializeField] private List<SpriteRenderer> interactiveRotatableRenderer;
-        [SerializeField] private ParticleSystem particleSystem;
-        private ParticleSystem.EmissionModule emissionModule;
+        [SerializeField] private ParticleSystem sparkles;
         private void Start()
         {
-            emissionModule  = particleSystem.emission;
         }
         public void RipOut()
         {
@@ -42,11 +40,10 @@ namespace DefaultNamespace
                 interactiveRotatableRenderer[i].material.SetFloat("_Progress", progressInPercent);
             }
 
-            if (progressInPercent > 0.6 && !emissionModule.enabled)
+            if (progressInPercent > 0.6)
             {
-                emissionModule.enabled = true;
+                sparkles.Play();
             }
-
             if (progressInPercent >= 1 && !Configs.Instance.Get.godModeON)
                 SceneHelper.Instance.GoToDefeat();
         }
