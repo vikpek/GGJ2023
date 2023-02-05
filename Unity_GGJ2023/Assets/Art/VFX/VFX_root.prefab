@@ -33,7 +33,7 @@ Transform:
   - {fileID: 6852335453792974874}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: -90, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!198 &1400087568602040972
 ParticleSystem:
   m_ObjectHideFlags: 0
@@ -57,7 +57,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0
+    scalar: 15
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -863,12 +863,12 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2
       minMaxState: 0
-      scalar: 3
+      scalar: 2
       minScalar: 10
       maxCurve:
         serializedVersion: 2
@@ -4869,7 +4869,7 @@ ParticleSystem:
   startDelay:
     serializedVersion: 2
     minMaxState: 0
-    scalar: 0
+    scalar: 15
     minScalar: 0
     maxCurve:
       serializedVersion: 2
@@ -5675,7 +5675,7 @@ ParticleSystem:
           m_PostInfinity: 2
           m_RotationOrder: 4
   EmissionModule:
-    enabled: 0
+    enabled: 1
     serializedVersion: 4
     rateOverTime:
       serializedVersion: 2

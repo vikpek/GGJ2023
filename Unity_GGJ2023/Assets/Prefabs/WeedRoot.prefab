@@ -491,25 +491,9 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2923845078523530110}
     m_Modifications:
-    - target: {fileID: 1400087568602040972, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1400087568602040972, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
-      propertyPath: EmissionModule.enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 1685812563325038661, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
       propertyPath: m_Name
       value: VFX_root
-      objectReference: {fileID: 0}
-    - target: {fileID: 3477667098996820085, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
-      propertyPath: playOnAwake
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3477667098996820085, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
-      propertyPath: EmissionModule.enabled
-      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 9222406982069197498, guid: 967e5961e1761f14fa09848df5c42892, type: 3}
       propertyPath: m_RootOrder
