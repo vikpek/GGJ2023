@@ -75,12 +75,13 @@ namespace DefaultNamespace
             playerInput.OnAction -= HandleAction;
         }
 
-        public void SetUpPlayer(int playerId){
-            if(playerId >= playerSkins.Length)
+        public void SetUpPlayer(int playerId)
+        {
+            if (playerId >= playerSkins.Length)
                 playerId = 0;
 
-                animator = playerSkins[playerId].Animator;
-                playerSkins[playerId].gameObject.SetActive(true);            
+            animator = playerSkins[playerId].Animator;
+            playerSkins[playerId].gameObject.SetActive(true);
         }
         private void OnForwardedPlayerTriggerEnter(Collider2D collider)
         {
@@ -136,22 +137,35 @@ namespace DefaultNamespace
             if (weedRootsWithinRange.Count <= 0 &&
                 seedlingsWithinRange.Count <= 0 &&
                 waterWithinRange.Count <= 0)
+            {
                 OnInteract(null);
+                return;
+            }
 
-            else if (weedRootsWithinRange.Count > 0)
+
+            if (weedRootsWithinRange.Count > 0)
                 animator.SetTrigger("TriggerHit");
 
             else if (seedlingsWithinRange.Count > 0)
                 animator.SetBool("Watering", true);
 
             foreach (var seedling in seedlingsWithinRange)
+            {
                 OnInteract(seedling);
+                return;
+            }
 
             foreach (var water in waterWithinRange)
+            {
                 OnInteract(water);
+                return;
+            }
 
             foreach (WeedRoot weedRoot in weedRootsWithinRange)
+            {
                 OnInteract(weedRoot);
+                return;
+            }
         }
 
         private void FixedUpdate() => AddRotation(currentSpeed);
@@ -167,8 +181,7 @@ namespace DefaultNamespace
 
         public static float CalculatePercentage(float currentTime, float totalTime)
         {
-            float calculatePercentage = (100f- (currentTime / totalTime * 100))/100f;
-            Debug.Log($"%%% {calculatePercentage}");
+            float calculatePercentage = (100f - (currentTime / totalTime * 100)) / 100f;
             return calculatePercentage;
         }
 
@@ -216,7 +229,8 @@ namespace DefaultNamespace
         private IEnumerator SkipFrame()
         {
             yield return null;
-            aoeRadius.enabled = false;
+            if (aoeRadius != null)
+                aoeRadius.enabled = false;
         }
         public void PerformInteraction(float duration, InteractionType interactionType)
         {
