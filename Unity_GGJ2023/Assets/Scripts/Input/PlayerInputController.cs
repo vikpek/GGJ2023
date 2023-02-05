@@ -36,7 +36,9 @@ public class PlayerInputController : MonoBehaviour
         if (!Application.isFocused)
             return;
 
-        if (context.performed)
+        //Debug.Log("context readvalue " + context.ReadValue<Vector2>()[0] + "context.started: " +context.started +" context.performed: " + context.performed + " context.canceled: " + context.canceled);
+
+        if (context.performed || context.started)
         {
             isRunningLeft = context.ReadValue<Vector2>()[0] < 0f;
             if (!inSpeedUp && context.ReadValue<Vector2>()[0] != 0f)
@@ -64,7 +66,6 @@ public class PlayerInputController : MonoBehaviour
         //Debug.Log($"HandleMove Trigger. context:{context.valueType}, moveInput:{context.ReadValue<Vector2>()}");
         if (!Application.isFocused)
             return;
-
         OnAction();
     }
 
