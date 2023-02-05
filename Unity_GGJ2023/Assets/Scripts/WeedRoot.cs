@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 namespace DefaultNamespace
@@ -6,6 +7,11 @@ namespace DefaultNamespace
     {
         [SerializeField] private List<SpriteRenderer> interactiveRotatableRenderer;
         [SerializeField] private ParticleSystem particleSystem;
+        private ParticleSystem.EmissionModule emissionModule;
+        private void Start()
+        {
+            emissionModule  = particleSystem.emission;
+        }
         public void RipOut()
         {
             growingState -= Configs.Instance.Get.ripOutStrength;
@@ -21,6 +27,7 @@ namespace DefaultNamespace
             base.UpdateVisuals();
             UpdateWeedRootState();
         }
+        
         private void UpdateWeedRootState()
         {
             float progressInPercent = Clamp(growingState / Configs.Instance.Get.growingStateSpeedSlowDown, 0, 1);
@@ -35,13 +42,11 @@ namespace DefaultNamespace
                 interactiveRotatableRenderer[i].material.SetFloat("_Progress", progressInPercent);
             }
 
-            if (progressInPercent > 0.6)
+            if (progressInPercent > 0.6 && !emissionModule.enabled)
             {
-                var partSystem  = particleSystem.emission;
-                partSystem.enabled = true;
+                emissionModule.enabled = true;
             }
 
-            Debug.Log($"growing state {progressInPercent}");
             if (progressInPercent >= 1)
                 SceneHelper.Instance.GoToDefeat();
         }
