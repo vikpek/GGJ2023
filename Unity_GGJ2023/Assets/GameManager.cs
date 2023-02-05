@@ -24,9 +24,10 @@ public class GameManager : MonoBehaviour
     private List<Seedling> seedlings = new();
     private Action OnWeedGrow = delegate { };
     private float timer = 0.0f;
+    private bool inSeedSpawning = false;
     void Start()
     {
-        AudioManager.Instance.PlayMusic(MusicPurpose.Chill);
+        AudioManager.Instance.PlayMusic(MusicPurpose.Chill, true);
         playerSpawner.OnPlayerSpawn += HandlePlayerSpawn;
         InvokeRepeating("SpawnTick", 0f, Configs.Instance.Get.spawnInterval);
         rotatables.Add(Instantiate(planetPrefab, planetCenter));
@@ -169,11 +170,13 @@ public class GameManager : MonoBehaviour
     private void SpawnSeedling(Player player)
     {
         StartCoroutine(SpawnSeedlingDelayed(player));
-
-
     }
     private IEnumerator SpawnSeedlingDelayed(Player player)
     {
+        if(player.InState(Player.State.Planting))
+            yield break;
+        
+        player.SwitchState(Player.State.Planting);
         player.PerformInteraction(Configs.Instance.Get.spawnSeedDuration, InteractionType.Seed);
         yield return new WaitForSeconds(Configs.Instance.Get.spawnSeedDuration);
         Seedling seedling = Instantiate(seedlingPrefab, planetCenter);
@@ -181,7 +184,8 @@ public class GameManager : MonoBehaviour
         seedling.OnInteract += HandleInteractWithSeedling;
         seedling.OnRemove += HandleOnRemove;
         rotatables.Add(seedling);
-        player.HideCargoUI();
+        player.HideCargoUI();        
+        player.SwitchState(Player.State.None);
     }
     private void HandleInteractWithSeedling(InteractiveRotatable obj)
     {
