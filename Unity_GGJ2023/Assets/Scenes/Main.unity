@@ -369,7 +369,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 897470253}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 7.96, y: 3.34, z: 0}
+  m_LocalPosition: {x: 7, y: 3.25, z: 0}
   m_LocalScale: {x: 1.1388294, y: 1.1388294, z: 1.1388294}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -537,7 +537,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1241087116}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -7.71, y: -3.41, z: 0}
+  m_LocalPosition: {x: -7, y: -3.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -601,14 +601,6 @@ PrefabInstance:
       value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5539314515592945123, guid: e1e15b3396a794143a75a9a09c2e6f74, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.92554057
-      objectReference: {fileID: 0}
-    - target: {fileID: 5539314515592945123, guid: e1e15b3396a794143a75a9a09c2e6f74, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.37864852
-      objectReference: {fileID: 0}
-    - target: {fileID: 5539314515592945123, guid: e1e15b3396a794143a75a9a09c2e6f74, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
       value: 0
       objectReference: {fileID: 0}
@@ -636,6 +628,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1379229971}
   - component: {fileID: 1379229970}
+  - component: {fileID: 1379229972}
   m_Layer: 0
   m_Name: clouds
   m_TagString: Untagged
@@ -685,7 +678,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_Sprite: {fileID: 21300000, guid: 6bb56bbd137060143b3bee30a5a78064, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 0.6}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -704,12 +697,28 @@ Transform:
   m_GameObject: {fileID: 1379229969}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.6, y: 0.6, z: 0.6}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.6}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 6
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 360}
+--- !u!111 &1379229972
+Animation:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1379229969}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Animation: {fileID: 7400000, guid: 6de30e46321fc414e89cc365719d5570, type: 2}
+  m_Animations:
+  - {fileID: 7400000, guid: 6de30e46321fc414e89cc365719d5570, type: 2}
+  m_WrapMode: 0
+  m_PlayAutomatically: 1
+  m_AnimatePhysics: 0
+  m_CullingType: 0
 --- !u!1 &1530561333
 GameObject:
   m_ObjectHideFlags: 0
