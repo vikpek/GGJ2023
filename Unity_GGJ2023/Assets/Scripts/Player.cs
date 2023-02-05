@@ -32,7 +32,6 @@ namespace DefaultNamespace
         [SerializeField] private ColliderForwarder aoeColliderForwarder;
         [SerializeField] private CircleCollider2D aoeRadius;
 
-
         public event Action<InteractiveRotatable> OnInteract;
 
         private int waterLevel = 0;
