@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
-using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = System.Random;
 public class GameManager : MonoBehaviour
@@ -27,6 +26,7 @@ public class GameManager : MonoBehaviour
     private float timer = 0.0f;
     void Start()
     {
+        AudioManager.Instance.PlayMusic(MusicPurpose.Chill);
         playerSpawner.OnPlayerSpawn += HandlePlayerSpawn;
         InvokeRepeating("SpawnTick", 0f, Configs.Instance.Get.spawnInterval);
         rotatables.Add(Instantiate(planetPrefab, planetCenter));
@@ -90,7 +90,7 @@ public class GameManager : MonoBehaviour
             switch (obj)
             {
                 case Water water:
-                    player.AddWater();
+                    HandleWaterPickup(player);
                     break;
                 case Seedling seedling:
                     if (seedling.IsReadyToHarvest)
@@ -100,8 +100,7 @@ public class GameManager : MonoBehaviour
                     }
                     if (player.HasWater())
                     {
-                        player.UseWater();
-                        seedling.Water();
+                        HandleWater(seedling, player);
                     }
                     break;
                 case WeedRoot weedRoot:
@@ -119,13 +118,38 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+
+
+    private void HandleWaterPickup(Player player)
+    {
+        StartCoroutine(DelayedWaterPickup(player));
+    }
+    private IEnumerator DelayedWaterPickup(Player player)
+    {
+        player.PerformInteraction(Configs.Instance.Get.wateringDuration, InteractionType.Water);
+        yield return new WaitForSeconds(Configs.Instance.Get.wateringDuration);
+        player.AddWater();
+    }
+
+    private void HandleWater(Seedling seedling, Player player)
+    {
+        StartCoroutine(DelayedWater(seedling, player));
+    }
+    private IEnumerator DelayedWater(Seedling seedling, Player player)
+    {
+        player.PerformInteraction(Configs.Instance.Get.wateringDuration, InteractionType.Water);
+        yield return new WaitForSeconds(Configs.Instance.Get.wateringDuration);
+        player.UseWater();
+        seedling.Water();
+        player.HideCargoUI();
+    }
     private void HandleHarvest(Seedling seedling, Player player)
     {
         StartCoroutine(DelayedHarvest(seedling, player));
     }
     private IEnumerator DelayedHarvest(Seedling seedling, Player player)
     {
-        player.BlockedByInteraction(Configs.Instance.Get.harvestDuration);
+        player.PerformInteraction(Configs.Instance.Get.harvestDuration, InteractionType.Harvest);
         yield return new WaitForSeconds(Configs.Instance.Get.harvestDuration);
         player.AddFlower();
         seedling.DelayedDestroy();
@@ -149,12 +173,14 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator SpawnSeedlingDelayed(Player player)
     {
+        player.PerformInteraction(Configs.Instance.Get.spawnSeedDuration, InteractionType.Seed);
         yield return new WaitForSeconds(Configs.Instance.Get.spawnSeedDuration);
         Seedling seedling = Instantiate(seedlingPrefab, planetCenter);
         seedling.rotatingObject.rotation = player.rotatingObject.rotation;
         seedling.OnInteract += HandleInteractWithSeedling;
         seedling.OnRemove += HandleOnRemove;
         rotatables.Add(seedling);
+        player.HideCargoUI();
     }
     private void HandleInteractWithSeedling(InteractiveRotatable obj)
     {

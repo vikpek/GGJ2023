@@ -2,7 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Serialization;
+using UnityEngine.UI;
 namespace DefaultNamespace
 {
     public enum Cargo
@@ -11,6 +11,13 @@ namespace DefaultNamespace
         Water,
         Flower
     }
+
+    public enum InteractionType
+    {
+        Seed,
+        Water,
+        Harvest
+    }
     public class Player : Rotatable
     {
         private int movementSpeed = 10;
@@ -18,14 +25,14 @@ namespace DefaultNamespace
         [SerializeField] private PlayerInputController playerInput;
         [SerializeField] private ColliderForwarder playerColliderForwarder;
         [SerializeField] private Animator animator;
-        [SerializeField] private SpriteRenderer cargoSprite;
+        [SerializeField] private Image cargoImage;
 
         [SerializeField] private PlayerSkin[] playerSkins;
 
         [SerializeField] private ColliderForwarder aoeColliderForwarder;
         [SerializeField] private CircleCollider2D aoeRadius;
-        
-        
+
+
         public event Action<InteractiveRotatable> OnInteract;
 
         private int waterLevel = 0;
@@ -38,7 +45,9 @@ namespace DefaultNamespace
         private List<Seedling> seedlingsWithinRange = new();
         private List<Water> waterWithinRange = new();
 
-        private bool isBlocked = false;
+        private float RemainingInteractionTime = 0f;
+        private float FullInteractionTime = 0f;
+
 
         void Awake()
         {
@@ -130,10 +139,10 @@ namespace DefaultNamespace
                 waterWithinRange.Count <= 0)
                 OnInteract(null);
 
-            else if(weedRootsWithinRange.Count > 0)
+            else if (weedRootsWithinRange.Count > 0)
                 animator.SetTrigger("TriggerHit");
 
-            else if(seedlingsWithinRange.Count > 0)
+            else if (seedlingsWithinRange.Count > 0)
                 animator.SetBool("Watering", true);
 
             foreach (var seedling in seedlingsWithinRange)
@@ -152,32 +161,46 @@ namespace DefaultNamespace
         {
             switch (CurrentlyHolding)
             {
-
                 case Cargo.Nothing:
-                    cargoSprite.sprite = null;
+                    // cargoImage.image = null;
                     break;
                 case Cargo.Water:
-                    cargoSprite.sprite = Configs.Instance.Get.waterSprite;
+                    // cargoImage.sprite = Configs.Instance.Get.waterSprite;
                     break;
                 case Cargo.Flower:
-                    cargoSprite.sprite = Configs.Instance.Get.flowerSprite;
+                    // cargoImage.sprite = Configs.Instance.Get.flowerSprite;
                     break;
                 default:
                     throw new ArgumentOutOfRangeException();
             }
+
+            if (RemainingInteractionTime > 0)
+            {
+                cargoImage.fillAmount = CalculatePercentage(RemainingInteractionTime, FullInteractionTime);
+                RemainingInteractionTime -= Time.deltaTime;
+            }
         }
+
+        public static float CalculatePercentage(float currentTime, float totalTime)
+        {
+            float calculatePercentage = (100f- (currentTime / totalTime * 100))/100f;
+            Debug.Log($"%%% {calculatePercentage}");
+            return calculatePercentage;
+        }
+
         private void HandleMove(float speed)
         {
-            if (isBlocked)
+            if (RemainingInteractionTime > 0)
             {
                 currentSpeed = 0;
-                return;
             }
-
-            currentSpeed = (speed * Configs.Instance.Get.maxSpeed);
-            animator.SetFloat("Speed", currentSpeed);
-            animator.SetBool("Watering", false);
-            //Debug.Log("HandleMove speed: " + speed + " currentSpeed: " + currentSpeed);
+            else
+            {
+                currentSpeed = (speed * Configs.Instance.Get.maxSpeed);
+                animator.SetFloat("Speed", currentSpeed);
+                animator.SetBool("Watering", false);
+                //Debug.Log("HandleMove speed: " + speed + " currentSpeed: " + currentSpeed);
+            }
         }
         public void AddWater()
         {
@@ -211,15 +234,28 @@ namespace DefaultNamespace
             yield return null;
             aoeRadius.enabled = false;
         }
-        public void BlockedByInteraction(float duration)
+        public void PerformInteraction(float duration, InteractionType interactionType)
         {
-            StartCoroutine(BlockedForSeconds(duration));
+            RemainingInteractionTime = duration;
+            FullInteractionTime = duration;
+            cargoImage.enabled = true;
+
+            switch (interactionType)
+            {
+                case InteractionType.Seed:
+                    cargoImage.sprite = Configs.Instance.Get.leafSprite;
+                    break;
+                case InteractionType.Water:
+                    cargoImage.sprite = Configs.Instance.Get.waterSprite;
+                    break;
+                case InteractionType.Harvest:
+                    cargoImage.sprite = Configs.Instance.Get.flowerSprite;
+                    break;
+            }
         }
-        private IEnumerator BlockedForSeconds(float duration)
+        public void HideCargoUI()
         {
-            isBlocked = true;
-            yield return new WaitForSeconds(duration);
-            isBlocked = false;
+            cargoImage.enabled = false;
         }
     }
 }
