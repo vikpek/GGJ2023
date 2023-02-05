@@ -13,7 +13,7 @@ public class PlayerInputController : MonoBehaviour
     private float animationCurveValue = 0.0f;
     private bool inSpeedUp = false;
     private bool inSlowDown = false;
-    private bool isRunningLeft = false;
+    private float isRunningLeftMultiplier = 1;
     private float speedUpTimer = 0.0f;
 
     private int playerId = 0;
@@ -36,11 +36,16 @@ public class PlayerInputController : MonoBehaviour
         if (!Application.isFocused)
             return;
 
-        //Debug.Log("context readvalue " + context.ReadValue<Vector2>()[0] + "context.started: " +context.started +" context.performed: " + context.performed + " context.canceled: " + context.canceled);
+        //isRunningLeftMultiplier = (context.ReadValue<Vector2>()[0] < 0f) ? -1 : 1; //not working because of edgecase 0
+        if(context.ReadValue<Vector2>()[0] > 0f){
+            isRunningLeftMultiplier = 1;
+        }else if(context.ReadValue<Vector2>()[0] < 0f){
+            isRunningLeftMultiplier = -1;
+        }
+        Debug.Log("context readvalue " + context.ReadValue<Vector2>()[0] + "("+isRunningLeftMultiplier+") context.started: " +context.started +" context.performed: " + context.performed + " context.canceled: " + context.canceled);
 
         if (context.performed || context.started)
         {
-            isRunningLeft = context.ReadValue<Vector2>()[0] < 0f;
             if (!inSpeedUp && context.ReadValue<Vector2>()[0] != 0f)
             {
                 Debug.Log("Starting Acceleration with " + curvePointer + " curvePointer");
@@ -51,7 +56,12 @@ public class PlayerInputController : MonoBehaviour
             if (!inSlowDown && context.ReadValue<Vector2>()[0] == 0f)
             {
                 slowDownCoroutine = StartCoroutine("SlowDownFade");
+                return;
             }
+            Debug.Log("OnMove("+isRunningLeftMultiplier+")");
+            if(animationCurveValue == 1)
+                OnMove(isRunningLeftMultiplier);
+            
         }
         if (context.canceled)
         {
@@ -91,7 +101,9 @@ public class PlayerInputController : MonoBehaviour
         }
         inSpeedUp = true;
         float elapsedTime = curvePointer*Configs.Instance.Get.speedFadeTime;
-        float multiplier = isRunningLeft ? -1f : 1f;
+        if(elapsedTime >= Configs.Instance.Get.speedFadeTime)
+            OnMove(isRunningLeftMultiplier);
+          
         while (elapsedTime < Configs.Instance.Get.speedFadeTime)
         {
             //Debug.Log("AccelerationFade while, curvePointer: " + curvePointer + ", animationCurveValue: " + animationCurveValue);
@@ -99,7 +111,7 @@ public class PlayerInputController : MonoBehaviour
             //Debug.Log("AccelerationFade while, elapsed Time:" + elapsedTime + " curveDuration: " + Configs.Instance.Get.speedFadeTime + " /= " + (elapsedTime / curveDuration));
             curvePointer += (Time.deltaTime / Configs.Instance.Get.speedFadeTime);
             animationCurveValue = SpeedAcc.Evaluate(curvePointer);
-            OnMove(animationCurveValue * multiplier);
+            OnMove(animationCurveValue * isRunningLeftMultiplier);
             if (curvePointer == 1f)
             {
                 inSpeedUp = false;
@@ -127,7 +139,9 @@ public class PlayerInputController : MonoBehaviour
         }
         inSlowDown = true;
         float elapsedTime = Configs.Instance.Get.speedFadeTime - curvePointer*Configs.Instance.Get.speedFadeTime;
-        float multiplier = isRunningLeft ? -1f : 1f;
+        if(elapsedTime >= Configs.Instance.Get.speedFadeTime)
+            OnMove(isRunningLeftMultiplier);
+
         while (elapsedTime < Configs.Instance.Get.speedFadeTime)
         {
             //Debug.Log("AccelerationFade while, curvePointer: " + curvePointer + ", animationCurveValue: " + animationCurveValue);
@@ -135,7 +149,7 @@ public class PlayerInputController : MonoBehaviour
             //Debug.Log("SlowDownFade while, elapsed Time:" + elapsedTime + " curveDuration: " + Configs.Instance.Get.speedFadeTime + " /= " + (elapsedTime / Configs.Instance.Get.speedFadeTime));
             curvePointer -= (Time.deltaTime / Configs.Instance.Get.speedFadeTime);
             animationCurveValue = SpeedAcc.Evaluate(curvePointer);
-            OnMove(animationCurveValue * multiplier);
+            OnMove(animationCurveValue * isRunningLeftMultiplier);
             if (curvePointer == 0f)
             {
                 inSlowDown = false;
