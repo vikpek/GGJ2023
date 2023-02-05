@@ -19,7 +19,7 @@ public class InteractiveRotatable : Rotatable
         OnGrow -= Grow;
     }
 
-    protected void RaiseOnRemove(InteractiveRotatable interactiveRotatable)
+    public void RaiseOnRemove(InteractiveRotatable interactiveRotatable)
     {
         OnRemove(interactiveRotatable);
     }

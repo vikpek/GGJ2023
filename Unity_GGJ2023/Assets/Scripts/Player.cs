@@ -1,9 +1,11 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 namespace DefaultNamespace
 {
-    enum Cargo
+    public enum Cargo
     {
         Nothing,
         Water,
@@ -14,9 +16,13 @@ namespace DefaultNamespace
         private int movementSpeed = 10;
 
         [SerializeField] private PlayerInputController playerInput;
-        [SerializeField] private ColliderForwarder colliderForwarder;
+        [SerializeField] private ColliderForwarder playerColliderForwarder;
         [SerializeField] private Animator animator;
         [SerializeField] private SpriteRenderer cargoSprite;
+
+        [SerializeField] private ColliderForwarder aoeColliderForwarder;
+        [SerializeField] private CircleCollider2D aoeRadius;
+        
         
         public event Action<InteractiveRotatable> OnInteract;
 
@@ -25,7 +31,7 @@ namespace DefaultNamespace
 
         private string name = "";
         private float currentSpeed;
-        private Cargo CurrentlyHolding;
+        public Cargo CurrentlyHolding;
         private List<WeedRoot> weedRootsWithinRange = new();
         private List<Seedling> seedlingsWithinRange = new();
         private List<Water> waterWithinRange = new();
@@ -37,26 +43,41 @@ namespace DefaultNamespace
 
         void OnEnable()
         {
-            colliderForwarder.OnTriggerEnterForward += OnForwardedTriggerEnterForward;
-            colliderForwarder.OnTriggerExitForward += OnForwardedTriggerExit;
+            playerColliderForwarder.OnTriggerEnterForward += OnForwardedPlayerTriggerEnter;
+            playerColliderForwarder.OnTriggerExitForward += OnForwardedPlayerTriggerExit;
+
+            aoeColliderForwarder.OnTriggerEnterForward += OnForwardedAoeTriggerEnter;
+
             playerInput.OnMove += HandleMove;
             playerInput.OnAction += HandleAction;
+            aoeRadius.enabled = false;
+            aoeRadius.radius = Configs.Instance.Get.aoeRadius;
         }
 
         private void OnDisable()
         {
-            colliderForwarder.OnTriggerEnterForward -= OnForwardedTriggerEnterForward;
-            colliderForwarder.OnTriggerExitForward -= OnForwardedTriggerExit;
+            playerColliderForwarder.OnTriggerEnterForward -= OnForwardedPlayerTriggerEnter;
+            playerColliderForwarder.OnTriggerExitForward -= OnForwardedPlayerTriggerExit;
+            aoeColliderForwarder.OnTriggerEnterForward -= OnForwardedAoeTriggerEnter;
             playerInput.OnMove -= HandleMove;
             playerInput.OnAction -= HandleAction;
         }
-        private void OnForwardedTriggerEnterForward(Collider2D collider)
+        private void OnForwardedPlayerTriggerEnter(Collider2D collider)
         {
             PerformFunctionOn(AddAndShow, collider, weedRootsWithinRange);
             PerformFunctionOn(AddAndShow, collider, seedlingsWithinRange);
             PerformFunctionOn(AddAndShow, collider, waterWithinRange);
         }
-        private void OnForwardedTriggerExit(Collider2D collider)
+        private void OnForwardedAoeTriggerEnter(Collider2D collider)
+        {
+            WeedRoot[] weedRoots = collider.GetComponentsInParent<WeedRoot>();
+            if (weedRoots is null)
+                return;
+
+            foreach (WeedRoot weedRoot in weedRoots)
+                weedRoot.RaiseOnRemove(weedRoot);
+        }
+        private void OnForwardedPlayerTriggerExit(Collider2D collider)
         {
             PerformFunctionOn(RemoveAndHide, collider, weedRootsWithinRange);
             PerformFunctionOn(RemoveAndHide, collider, seedlingsWithinRange);
@@ -110,7 +131,7 @@ namespace DefaultNamespace
                 OnInteract(water);
 
             foreach (WeedRoot weedRoot in weedRootsWithinRange)
-                weedRoot.RipOut();
+                OnInteract(weedRoot);
         }
 
         private void FixedUpdate() => AddRotation(currentSpeed);
@@ -161,6 +182,16 @@ namespace DefaultNamespace
         {
             CurrentlyHolding = Cargo.Nothing;
             flowerAmount = 0;
+        }
+        public void AoeBomb()
+        {
+            aoeRadius.enabled = true;
+            StartCoroutine(SkipFrame());
+        }
+        private IEnumerator SkipFrame()
+        {
+            yield return null;
+            aoeRadius.enabled = false;
         }
     }
 }

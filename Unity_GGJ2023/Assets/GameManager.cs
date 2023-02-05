@@ -70,7 +70,18 @@ public class GameManager : MonoBehaviour
     {
         if (obj == null)
         {
-            SpawnSeedling(player);
+            switch (player.CurrentlyHolding)
+            {
+                case Cargo.Nothing:
+                    SpawnSeedling(player);
+                    break;
+                case Cargo.Water:
+                    player.UseWater();
+                    break;
+                case Cargo.Flower:
+                    player.UseFlower();
+                    break;
+            }
         }
         else
         {
@@ -83,6 +94,7 @@ public class GameManager : MonoBehaviour
                     if (seedling.IsReadyToHarvest)
                     {
                         player.AddFlower();
+                        seedling.DelayedDestroy();
                         break;
                     }
                     if (player.HasWater())
@@ -91,7 +103,18 @@ public class GameManager : MonoBehaviour
                         seedling.Water();
                     }
                     break;
+                case WeedRoot weedRoot:
+                    if (player.HasFlower())
+                    {
+                        player.AoeBomb();
+                        player.UseFlower();
+                    }
+                    else
+                    {
+                        weedRoot.RipOut();
+                    }
 
+                    break;
             }
         }
     }
@@ -110,6 +133,7 @@ public class GameManager : MonoBehaviour
         Seedling seedling = Instantiate(seedlingPrefab, planetCenter);
         seedling.rotatingObject.rotation = player.rotatingObject.rotation;
         seedling.OnInteract += HandleInteractWithSeedling;
+        seedling.OnRemove += HandleOnRemove;
         rotatables.Add(seedling);
     }
     private void HandleInteractWithSeedling(InteractiveRotatable obj)

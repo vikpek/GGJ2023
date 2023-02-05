@@ -84,6 +84,67 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &2337983264051263554
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 3470345509612320191}
+  - component: {fileID: 6527934905617210270}
+  - component: {fileID: 1588760675056995975}
+  m_Layer: 0
+  m_Name: AoeCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &3470345509612320191
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337983264051263554}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6137684975823808991}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!58 &6527934905617210270
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337983264051263554}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  serializedVersion: 2
+  m_Radius: 3
+--- !u!114 &1588760675056995975
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2337983264051263554}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 70d58475bffa41b7a10d298eef018b10, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2589480503216514814
 GameObject:
   m_ObjectHideFlags: 0
@@ -270,9 +331,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   rotatingObject: {fileID: 6137684974178593759}
   playerInput: {fileID: 0}
-  colliderForwarder: {fileID: 3735297319125511613}
+  playerColliderForwarder: {fileID: 3735297319125511613}
   animator: {fileID: 2389234303795318967}
   cargoSprite: {fileID: 3720106521093198074}
+  aoeColliderForwarder: {fileID: 1588760675056995975}
+  aoeRadius: {fileID: 6527934905617210270}
+  CurrentlyHolding: 0
 --- !u!114 &8297475875686338692
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -387,8 +451,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0b0b8d668b9968f4fb46510d077ab02b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 2
-  currentSpeed: 0
   SpeedAcc:
     serializedVersion: 2
     m_Curve:
@@ -413,8 +475,6 @@ MonoBehaviour:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
-  curveSteps: 0.01
-  curveDuration: 0.5
 --- !u!1 &6137684975823808988
 GameObject:
   m_ObjectHideFlags: 0
@@ -449,6 +509,7 @@ Transform:
   - {fileID: 4726748023458431659}
   - {fileID: 9064555327640807061}
   - {fileID: 5346783114687420774}
+  - {fileID: 3470345509612320191}
   m_Father: {fileID: 6137684974178593759}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

@@ -25,4 +25,7 @@ public class ConfigurationsSO : ScriptableObject
     public Sprite flowerSprite;
     public float growingPhase1Duration = 2f;
     public float growingPhase2Duration = 2f;
+    public float flowerDestructionDelay = 2f;
+    public float growingPhaseLastDuration = 5f;
+    public float aoeRadius = 3f;
 }

@@ -1,7 +1,5 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
 namespace DefaultNamespace
 {
@@ -17,17 +15,20 @@ namespace DefaultNamespace
 
         public void Water()
         {
-            ActivatePhase(1);
             StartCoroutine(InitiateGrowing());
         }
 
         private IEnumerator InitiateGrowing()
         {
+            ActivatePhase(1);
             yield return new WaitForSeconds(Configs.Instance.Get.growingPhase1Duration);
             ActivatePhase(2);
             yield return new WaitForSeconds(Configs.Instance.Get.growingPhase2Duration);
             ActivatePhase(3);
             IsReadyToHarvest = true;
+            yield return new WaitForSeconds(Configs.Instance.Get.growingPhaseLastDuration);
+            ActivatePhase(5);
+            RaiseOnRemove(this);
         }
         private void ActivatePhase(int phase)
         {
@@ -37,6 +38,17 @@ namespace DefaultNamespace
             }
 
             seedlingPhaseObjects[phase].SetActive(true);
+        }
+        public void DelayedDestroy()
+        {
+            StartCoroutine(InitiateDestruction());
+        }
+
+        private IEnumerator InitiateDestruction()
+        {
+            ActivatePhase(4);
+            yield return new WaitForSeconds(Configs.Instance.Get.flowerDestructionDelay);
+            RaiseOnRemove(this);
         }
     }
 }
