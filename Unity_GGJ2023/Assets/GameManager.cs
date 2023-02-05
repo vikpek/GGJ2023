@@ -45,11 +45,12 @@ public class GameManager : MonoBehaviour
 
     private void HandlePlayerSpawn(Player obj)
     {
-        obj.OnInteract += delegate(InteractiveRotatable rotatable)
+        obj.OnInteract += delegate (InteractiveRotatable rotatable)
         {
             HandleOnInteract(rotatable, obj);
         };
         rotatables.Add(obj);
+        players.Add(obj);
     }
     void SpawnTick()
     {
@@ -71,6 +72,7 @@ public class GameManager : MonoBehaviour
     }
     private void HandleOnInteract(InteractiveRotatable obj, Player player)
     {
+        Debug.Log("HandleOnInteract obj:" + obj);
         if (obj == null)
         {
             switch (player.CurrentlyHolding)
@@ -159,11 +161,28 @@ public class GameManager : MonoBehaviour
 
     private void HandleOnRemove(InteractiveRotatable obj)
     {
+        Debug.Log("HandleOnRemove " + obj);
         if (rotatables.Contains(obj))
         {
             rotatables.Remove(obj);
             if (obj != null)
-                Destroy(obj);
+                Destroy(obj.gameObject);
+        }
+
+        if (obj is WeedRoot)
+        {
+            foreach (var player in players)
+            {
+                player.RemoveWeedRoots((WeedRoot)obj);
+            }
+
+        }
+        else if (obj is Seedling)
+        {
+            foreach (var player in players)
+            {
+                player.RemoveSeedling((Seedling)obj);
+            }
         }
     }
 
@@ -173,9 +192,9 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator SpawnSeedlingDelayed(Player player)
     {
-        if(player.InState(Player.State.Planting))
+        if (player.InState(Player.State.Planting))
             yield break;
-        
+
         player.SwitchState(Player.State.Planting);
         player.PerformInteraction(Configs.Instance.Get.spawnSeedDuration, InteractionType.Seed);
         yield return new WaitForSeconds(Configs.Instance.Get.spawnSeedDuration);
@@ -184,7 +203,7 @@ public class GameManager : MonoBehaviour
         seedling.OnInteract += HandleInteractWithSeedling;
         seedling.OnRemove += HandleOnRemove;
         rotatables.Add(seedling);
-        player.HideCargoUI();        
+        player.HideCargoUI();
         player.SwitchState(Player.State.None);
     }
     private void HandleInteractWithSeedling(InteractiveRotatable obj)
@@ -194,8 +213,15 @@ public class GameManager : MonoBehaviour
 
     void Update()
     {
-        foreach (IRotatable rotatable in rotatables)
-            rotatable.AddRotation(Configs.Instance.Get.rotationSpeed);
+        for (int i = rotatables.Count - 1; i >= 0; i--)
+        {
+            if (rotatables[i] == null)
+            {
+                rotatables.RemoveAt(i);
+                continue;
+            }
+            rotatables[i].AddRotation(Configs.Instance.Get.rotationSpeed);
+        }
 
         OnWeedGrow();
     }

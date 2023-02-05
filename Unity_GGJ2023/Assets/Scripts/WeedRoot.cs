@@ -9,6 +9,7 @@ namespace DefaultNamespace
         public void RipOut()
         {
             growingState -= Configs.Instance.Get.ripOutStrength;
+            Debug.Log("RipOut, growingState = " +growingState);
             UpdateWeedRootVisuals();
 
             if (growingState <= 0)
@@ -24,11 +25,18 @@ namespace DefaultNamespace
         {
             float nextAlpha = Clamp(growingState / Configs.Instance.Get.growingStateSpeedSlowDown, 0, 1);
 
-            foreach (SpriteRenderer spriteRenderer in interactiveRotatableRenderer)
-                spriteRenderer.material.SetFloat("_Progress", nextAlpha);
+            for (int i = interactiveRotatableRenderer.Count - 1; i >= 0; i--)
+            {
+                if (interactiveRotatableRenderer[i] == null)
+                {
+                    interactiveRotatableRenderer.RemoveAt(i);
+                    continue;
+                }
+                interactiveRotatableRenderer[i].material.SetFloat("_Progress", nextAlpha);
+            }
 
             // if (growingState > 60)
-                 // particleSystem.emission= true;
+            // particleSystem.emission= true;
         }
     }
 }

@@ -147,6 +147,7 @@ namespace DefaultNamespace
                 seedlingsWithinRange.Count <= 0 &&
                 waterWithinRange.Count <= 0)
             {
+                Debug.Log($"HandleAction: weeds: {weedRootsWithinRange.Count} + seeds: {seedlingsWithinRange.Count}, water: {waterWithinRange.Count}");
                 OnInteract(null);
                 return;
             }
@@ -175,6 +176,20 @@ namespace DefaultNamespace
             {
                 OnInteract(weedRoot);
                 return;
+            }
+        }
+
+        public void RemoveWeedRoots(WeedRoot weedRoot){
+            Debug.Log("RemoveWeedRoot: " + weedRoot);
+            if(weedRootsWithinRange.Contains(weedRoot)){
+                weedRootsWithinRange.Remove(weedRoot);
+            }
+        }
+
+        public void RemoveSeedling(Seedling seedling){
+            Debug.Log("RemoveSeedling: " + seedling);
+            if(seedlingsWithinRange.Contains(seedling)){
+                seedlingsWithinRange.Remove(seedling);
             }
         }
 
