@@ -137,7 +137,6 @@ public class GameManager : MonoBehaviour
                     if (player.HasFlower())
                     {
                         player.AoeBomb();
-                        player.UseFlower();
                     }
                     else
                     {

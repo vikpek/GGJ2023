@@ -32,6 +32,8 @@ namespace DefaultNamespace
 
         [SerializeField] private ColliderForwarder aoeColliderForwarder;
         [SerializeField] private CircleCollider2D aoeRadius;
+        [SerializeField] private ParticleSystem aoeParticleSystem;
+        
 
         public event Action<InteractiveRotatable> OnInteract;
 
@@ -264,11 +266,14 @@ namespace DefaultNamespace
         public void AoeBomb()
         {
             aoeRadius.enabled = true;
+            UseFlower();
+            HideCargoUI();
+            aoeParticleSystem.Play();
             StartCoroutine(SkipFrame());
         }
         private IEnumerator SkipFrame()
         {
-            yield return null;
+            yield return new WaitForSeconds(0.1f);
             if (aoeRadius != null)
                 aoeRadius.enabled = false;
         }
