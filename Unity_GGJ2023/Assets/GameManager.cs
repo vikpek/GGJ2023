@@ -26,6 +26,7 @@ public class GameManager : MonoBehaviour
     private float timer = 0.0f;
     void Start()
     {
+        AudioManager.Instance.PlayMusic(MusicPurpose.Chill);
         playerSpawner.OnPlayerSpawn += HandlePlayerSpawn;
         InvokeRepeating("SpawnTick", 0f, Configs.Instance.Get.spawnInterval);
         rotatables.Add(Instantiate(planetPrefab, planetCenter));
