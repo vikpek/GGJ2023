@@ -158,21 +158,6 @@ namespace DefaultNamespace
 
         private void Update()
         {
-            switch (CurrentlyHolding)
-            {
-                case Cargo.Nothing:
-                    // cargoImage.image = null;
-                    break;
-                case Cargo.Water:
-                    // cargoImage.sprite = Configs.Instance.Get.waterSprite;
-                    break;
-                case Cargo.Flower:
-                    // cargoImage.sprite = Configs.Instance.Get.flowerSprite;
-                    break;
-                default:
-                    throw new ArgumentOutOfRangeException();
-            }
-
             if (RemainingInteractionTime > 0)
             {
                 cargoImage.fillAmount = CalculatePercentage(RemainingInteractionTime, FullInteractionTime);
