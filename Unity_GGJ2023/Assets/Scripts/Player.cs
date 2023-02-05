@@ -16,7 +16,8 @@ namespace DefaultNamespace
     {
         Seed,
         Water,
-        Harvest
+        Harvest,
+        WaterPickup
     }
     public class Player : Rotatable
     {
@@ -51,6 +52,7 @@ namespace DefaultNamespace
 
 
         private State state = State.None;
+        private InteractionType currentInteraction;
 
         public enum State { None, Planting, Stomping, Harvesting };
 
@@ -147,7 +149,7 @@ namespace DefaultNamespace
         }
         private void HandleAction()
         {
-            if(inInteractionDelay)
+            if (inInteractionDelay)
                 return;
 
             if (weedRootsWithinRange.Count <= 0 &&
@@ -212,7 +214,10 @@ namespace DefaultNamespace
         {
             if (RemainingInteractionTime > 0)
             {
-                cargoImage.fillAmount = CalculationHelper.CalculatePercentageReverted(RemainingInteractionTime, FullInteractionTime);
+                if (currentInteraction == InteractionType.Water)
+                    cargoImage.fillAmount = CalculationHelper.CalculatePercentage(RemainingInteractionTime, FullInteractionTime);
+                else
+                    cargoImage.fillAmount = CalculationHelper.CalculatePercentageReverted(RemainingInteractionTime, FullInteractionTime);
                 RemainingInteractionTime -= Time.deltaTime;
             }
         }
@@ -269,7 +274,8 @@ namespace DefaultNamespace
         {
             float deltaTime = 0.0f;
             inInteractionDelay = true;
-            while(deltaTime <= Configs.Instance.Get.interactionDelay){
+            while (deltaTime <= Configs.Instance.Get.interactionDelay)
+            {
                 deltaTime += Time.deltaTime;
                 yield return null;
             }
@@ -280,7 +286,7 @@ namespace DefaultNamespace
             RemainingInteractionTime = duration;
             FullInteractionTime = duration;
             cargoImage.enabled = true;
-
+            currentInteraction = interactionType;
             switch (interactionType)
             {
                 case InteractionType.Seed:
@@ -288,6 +294,10 @@ namespace DefaultNamespace
                     AudioManager.Instance.PlayAudio(ClipPurpose.Planting);
                     break;
                 case InteractionType.Water:
+                    cargoImage.sprite = Configs.Instance.Get.waterSprite;
+                    AudioManager.Instance.PlayAudio(ClipPurpose.Watering);
+                    break;
+                case InteractionType.WaterPickup:
                     cargoImage.sprite = Configs.Instance.Get.waterSprite;
                     AudioManager.Instance.PlayAudio(ClipPurpose.Watering);
                     break;
