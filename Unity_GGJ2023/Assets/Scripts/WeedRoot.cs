@@ -40,10 +40,10 @@ namespace DefaultNamespace
                 interactiveRotatableRenderer[i].material.SetFloat("_Progress", progressInPercent);
             }
 
-            if (progressInPercent > 0.6)
-            {
-                sparkles.Play();
-            }
+            // if (progressInPercent > 0.6)
+            // {
+            //     sparkles.Play();
+            // }
             if (progressInPercent >= 1 && !Configs.Instance.Get.godModeON)
                 SceneHelper.Instance.GoToDefeat();
         }
