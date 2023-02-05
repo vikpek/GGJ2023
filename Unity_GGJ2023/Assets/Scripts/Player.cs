@@ -25,7 +25,7 @@ namespace DefaultNamespace
 
         [SerializeField] private PlayerInputController playerInput;
         [SerializeField] private ColliderForwarder playerColliderForwarder;
-        [SerializeField] private Animator animator;
+        [SerializeField] public Animator Animator;
         [SerializeField] private Image cargoImage;
 
         [SerializeField] private PlayerSkin[] playerSkins;
@@ -95,7 +95,7 @@ namespace DefaultNamespace
             if (playerId >= playerSkins.Length)
                 playerId = 0;
 
-            animator = playerSkins[playerId].Animator;
+            Animator = playerSkins[playerId].Animator;
             playerSkins[playerId].gameObject.SetActive(true);
             StartCoroutine("InteractionDelay");
         }
@@ -235,8 +235,8 @@ namespace DefaultNamespace
             else
             {
                 currentSpeed = (speed * Configs.Instance.Get.maxSpeed);
-                animator.SetFloat("Speed", currentSpeed);
-                animator.SetBool("Watering", false);
+                Animator.SetFloat("Speed", currentSpeed);
+                Animator.SetBool("Watering", false);
                 //Debug.Log("HandleMove speed: " + speed + " currentSpeed: " + currentSpeed);
             }
         }
@@ -249,7 +249,7 @@ namespace DefaultNamespace
         public void UseWater()
         {
             CurrentlyHolding = Cargo.Nothing;
-            animator.SetBool("Watering", true);
+            Animator.SetBool("Watering", true);
             waterLevel = 0;
         }
         public void AddFlower()
@@ -265,6 +265,7 @@ namespace DefaultNamespace
         }
         public void AoeBomb()
         {
+            Debug.Log("AoE Enabled!");
             aoeRadius.enabled = true;
             UseFlower();
             HideCargoUI();
@@ -276,6 +277,8 @@ namespace DefaultNamespace
             yield return new WaitForSeconds(0.1f);
             if (aoeRadius != null)
                 aoeRadius.enabled = false;
+                
+            Debug.Log("AoE Disabled!");
         }
 
         private IEnumerator InteractionDelay()
@@ -300,13 +303,13 @@ namespace DefaultNamespace
                 case InteractionType.Seed:
                     cargoImage.sprite = Configs.Instance.Get.leafSprite;
                     AudioManager.Instance.PlayAudio(ClipPurpose.Planting);
-                    animator.SetFloat("Speed", 0f);
+                    Animator.SetFloat("Speed", 0f);
                     break;
                 case InteractionType.Water:
                     cargoImage.sprite = Configs.Instance.Get.waterSprite;
                     AudioManager.Instance.PlayAudio(ClipPurpose.Watering);
-                    animator.SetBool("Watering", true);
-                    animator.SetFloat("Speed", 0f);
+                    Animator.SetBool("Watering", true);
+                    Animator.SetFloat("Speed", 0f);
                     break;
                 case InteractionType.WaterPickup:
                     cargoImage.sprite = Configs.Instance.Get.waterSprite;
@@ -315,7 +318,6 @@ namespace DefaultNamespace
                 case InteractionType.Harvest:
                     cargoImage.sprite = Configs.Instance.Get.flowerSprite;
                     AudioManager.Instance.PlayAudio(ClipPurpose.Gathering);
-                    animator.SetTrigger("TriggerHit");
                     break;
             }
         }

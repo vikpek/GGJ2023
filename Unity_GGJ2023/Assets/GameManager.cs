@@ -260,8 +260,10 @@ public class GameManager : MonoBehaviour
         }
         OnWeedGrow();
         timeRemaining -= Time.deltaTime;
-        if (timeRemaining <= 0)
+        if (timeRemaining <= 0){
+            AudioManager.Instance.PlayAudio(ClipPurpose.WinningSound);
             SceneHelper.Instance.GoToVictory();
+        }
 
     }
 }
