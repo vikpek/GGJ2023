@@ -213,8 +213,6 @@ public class GameManager : MonoBehaviour
         throw new NotImplementedException();
     }
 
-
-
     void Update()
     {
         for (int i = rotatables.Count - 1; i >= 0; i--)
@@ -226,10 +224,7 @@ public class GameManager : MonoBehaviour
             }
             rotatables[i].AddRotation(Configs.Instance.Get.rotationSpeed);
         }
-
         OnWeedGrow();
-
-        Debug.Log($"timeRemaining {timeRemaining}");
         timeRemaining -= Time.deltaTime;
         if (timeRemaining <= 0)
             SceneHelper.Instance.GoToVictory();

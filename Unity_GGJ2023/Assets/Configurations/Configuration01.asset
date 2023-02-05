@@ -29,9 +29,10 @@ MonoBehaviour:
   leafSprite: {fileID: 21300000, guid: b2c2d85dee1e15d4eac89ec55b206303, type: 3}
   growingPhase1Duration: 2
   growingPhase2Duration: 2
-  flowerDestructionDelay: 2
+  flowerDestructionDelay: 15
   growingPhaseLastDuration: 5
   aoeRadius: 3
   spawnSeedDuration: 3
   harvestDuration: 3
-  wateringDuration: 3
+  wateringDuration: 2
+  durationUntilWin: 150

@@ -23,7 +23,7 @@ namespace DefaultNamespace
         }
         private void UpdateWeedRootState()
         {
-            float nextAlpha = Clamp(growingState / Configs.Instance.Get.growingStateSpeedSlowDown, 0, 1);
+            float progressInPercent = Clamp(growingState / Configs.Instance.Get.growingStateSpeedSlowDown, 0, 1);
 
             for (int i = interactiveRotatableRenderer.Count - 1; i >= 0; i--)
             {
@@ -32,14 +32,14 @@ namespace DefaultNamespace
                     interactiveRotatableRenderer.RemoveAt(i);
                     continue;
                 }
-                interactiveRotatableRenderer[i].material.SetFloat("_Progress", nextAlpha);
+                interactiveRotatableRenderer[i].material.SetFloat("_Progress", progressInPercent);
             }
 
             // if (growingState > 60)
             // particleSystem.emission= true;
 
-            Debug.Log($"growing state {growingState}");
-            if (growingState >= 1000)
+            Debug.Log($"growing state {progressInPercent}");
+            if (progressInPercent >= 1)
                 SceneHelper.Instance.GoToDefeat();
         }
     }
