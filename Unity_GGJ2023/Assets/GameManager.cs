@@ -43,6 +43,7 @@ public class GameManager : MonoBehaviour
     }
     private void IncreaseDifficulty()
     {
+        Debug.Log($"Spawnintervall set to {Configs.Instance.Get.spawnInterval}");
         Configs.Instance.Get.spawnInterval -= Configs.Instance.Get.increaseDifficultyStep;
     }
 

@@ -36,4 +36,5 @@ public class ConfigurationsSO : ScriptableObject
     public float durationUntilWin = 30f;
     public float difficultyIncreaseDuration = 10f;
     public float increaseDifficultyStep = 0.1f;
+    public bool godModeON = false;
 }
