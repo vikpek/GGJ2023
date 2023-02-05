@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
     private float timer = 0.0f;
     private bool inSeedSpawning = false;
     private float timeRemaining;
+
+    private List<Water> waterz = new();
     void Start()
     {
         AudioManager.Instance.PlayMusic(MusicPurpose.Chill, true);
@@ -43,11 +45,12 @@ public class GameManager : MonoBehaviour
         Water water = Instantiate(waterPrefab, planetCenter);
         rotatables.Add(water);
         water.transform.Rotate(Vector3.back, rotation, Space.Self);
+        waterz.Add(water);
     }
 
     private void HandlePlayerSpawn(Player obj)
     {
-        obj.OnInteract += delegate (InteractiveRotatable rotatable)
+        obj.OnInteract += delegate(InteractiveRotatable rotatable)
         {
             HandleOnInteract(rotatable, obj);
         };
@@ -64,14 +67,35 @@ public class GameManager : MonoBehaviour
     Random rand = new();
     private WeedRoot SpawnWeedRoot()
     {
-        WeedRoot weedRootInstance = Instantiate(weedRootPrefab, planetCenter);
-        weedRootInstance.Reset();
-        weedRootInstance.transform.Rotate(Vector3.back, rand.Next(Configs.Instance.Get.minNightAngle + minNightAngleAdd, Configs.Instance.Get.maxNightAngle + maxNightAngleAdd), Space.Self);
-        rotatables.Add(weedRootInstance);
+        WeedRoot weedRootInstance = InitializeWeedRoot();
+        if (IsCloseToWater(weedRootInstance))
+            weedRootInstance.transform.Rotate(Vector3.back, 5, Space.Self);
 
+        rotatables.Add(weedRootInstance);
         weedRootInstance.OnRemove += HandleOnRemove;
         return weedRootInstance;
     }
+    private bool IsCloseToWater(WeedRoot weedRoot)
+    {
+        foreach (Water water in waterz)
+        {
+            var distance = Vector2.Distance(weedRoot.GetComponentInChildren<SpriteRenderer>().transform.position, water.GetComponentInChildren<SpriteRenderer>().transform.position);
+            Debug.Log($"distance {distance}");
+            if (Vector2.Distance(weedRoot.rotatingObject.transform.position, water.rotatingObject.transform.position) < 1)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+    private WeedRoot InitializeWeedRoot()
+    {
+        WeedRoot weedRootInstance = Instantiate(weedRootPrefab, planetCenter);
+        weedRootInstance.Reset();
+        weedRootInstance.transform.Rotate(Vector3.back, rand.Next(Configs.Instance.Get.minNightAngle + minNightAngleAdd, Configs.Instance.Get.maxNightAngle + maxNightAngleAdd), Space.Self);
+        return weedRootInstance;
+    }
+
     private void HandleOnInteract(InteractiveRotatable obj, Player player)
     {
         Debug.Log("HandleOnInteract obj:" + obj);
