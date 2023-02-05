@@ -25,10 +25,10 @@ public class SingletonMonoBehaviour<T> : MonoBehaviour where T : MonoBehaviour
         if (instance == null)
         {
             instance = this as T;
+            DontDestroyOnLoad(instance);
         }
         else if (instance != this)
         {
-            Debug.LogError("There cannot be multiple instances of SingletonMonoBehaviour.");
             Destroy(gameObject);
         }
     }

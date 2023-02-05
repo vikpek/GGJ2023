@@ -10,7 +10,7 @@ namespace DefaultNamespace
         {
             growingState -= Configs.Instance.Get.ripOutStrength;
             Debug.Log("RipOut, growingState = " +growingState);
-            UpdateWeedRootVisuals();
+            UpdateWeedRootState();
 
             if (growingState <= 0)
                 RaiseOnRemove(this);
@@ -19,9 +19,9 @@ namespace DefaultNamespace
         protected override void UpdateVisuals()
         {
             base.UpdateVisuals();
-            UpdateWeedRootVisuals();
+            UpdateWeedRootState();
         }
-        private void UpdateWeedRootVisuals()
+        private void UpdateWeedRootState()
         {
             float nextAlpha = Clamp(growingState / Configs.Instance.Get.growingStateSpeedSlowDown, 0, 1);
 
@@ -37,6 +37,10 @@ namespace DefaultNamespace
 
             // if (growingState > 60)
             // particleSystem.emission= true;
+
+            Debug.Log($"growing state {growingState}");
+            if (growingState >= 1000)
+                SceneHelper.Instance.GoToDefeat();
         }
     }
 }

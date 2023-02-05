@@ -199,15 +199,9 @@ namespace DefaultNamespace
         {
             if (RemainingInteractionTime > 0)
             {
-                cargoImage.fillAmount = CalculatePercentage(RemainingInteractionTime, FullInteractionTime);
+                cargoImage.fillAmount = CalculationHelper.CalculatePercentage(RemainingInteractionTime, FullInteractionTime);
                 RemainingInteractionTime -= Time.deltaTime;
             }
-        }
-
-        public static float CalculatePercentage(float currentTime, float totalTime)
-        {
-            float calculatePercentage = (100f - (currentTime / totalTime * 100)) / 100f;
-            return calculatePercentage;
         }
 
         private void HandleMove(float speed)

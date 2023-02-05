@@ -25,6 +25,7 @@ public class GameManager : MonoBehaviour
     private Action OnWeedGrow = delegate { };
     private float timer = 0.0f;
     private bool inSeedSpawning = false;
+    private float timeRemaining;
     void Start()
     {
         AudioManager.Instance.PlayMusic(MusicPurpose.Chill, true);
@@ -32,6 +33,7 @@ public class GameManager : MonoBehaviour
         InvokeRepeating("SpawnTick", 0f, Configs.Instance.Get.spawnInterval);
         rotatables.Add(Instantiate(planetPrefab, planetCenter));
 
+        timeRemaining = Configs.Instance.Get.durationUntilWin;
         InitWater(0f);
         InitWater(180f);
     }
@@ -211,6 +213,8 @@ public class GameManager : MonoBehaviour
         throw new NotImplementedException();
     }
 
+
+
     void Update()
     {
         for (int i = rotatables.Count - 1; i >= 0; i--)
@@ -224,5 +228,10 @@ public class GameManager : MonoBehaviour
         }
 
         OnWeedGrow();
+
+        Debug.Log($"timeRemaining {timeRemaining}");
+        timeRemaining -= Time.deltaTime;
+        if (timeRemaining <= 0)
+            SceneHelper.Instance.GoToVictory();
     }
 }
