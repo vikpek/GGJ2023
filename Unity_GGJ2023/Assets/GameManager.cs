@@ -131,7 +131,7 @@ public class GameManager : MonoBehaviour
     }
     private IEnumerator DelayedWaterPickup(Player player)
     {
-        player.PerformInteraction(Configs.Instance.Get.wateringDuration, InteractionType.Water);
+        player.PerformInteraction(Configs.Instance.Get.wateringDuration, InteractionType.WaterPickup);
         yield return new WaitForSeconds(Configs.Instance.Get.wateringDuration);
         player.AddWater();
     }
