@@ -70,11 +70,7 @@ public class GameManager : MonoBehaviour
     {
         if (obj == null)
         {
-            if (player.HasWater())
-            {
-                SpawnSeedling(player);
-                player.UseWater();
-            }
+            SpawnSeedling(player);
         }
         else
         {
@@ -84,8 +80,16 @@ public class GameManager : MonoBehaviour
                     player.AddWater();
                     break;
                 case Seedling seedling:
-                    if (Seedling.IsReadyToHarvest)
+                    if (seedling.IsReadyToHarvest)
+                    {
                         player.AddFlower();
+                        break;
+                    }
+                    if (player.HasWater())
+                    {
+                        player.UseWater();
+                        seedling.Water();
+                    }
                     break;
 
             }

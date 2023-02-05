@@ -23,4 +23,6 @@ public class ConfigurationsSO : ScriptableObject
     public float growingStateSpeedSlowDown = 1000f;
     public Sprite waterSprite;
     public Sprite flowerSprite;
+    public float growingPhase1Duration = 2f;
+    public float growingPhase2Duration = 2f;
 }

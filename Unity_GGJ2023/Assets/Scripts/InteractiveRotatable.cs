@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 public class InteractiveRotatable : Rotatable
 {
-    [SerializeField] protected TMP_Text buttonHint;
+    // [SerializeField] protected TMP_Text buttonHint;
 
     public event Action OnGrow = delegate { };
     public event Action<InteractiveRotatable> OnRemove = delegate { };
