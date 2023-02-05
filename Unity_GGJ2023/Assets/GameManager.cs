@@ -152,7 +152,8 @@ public class GameManager : MonoBehaviour
         player.PerformInteraction(Configs.Instance.Get.harvestDuration, InteractionType.Harvest);
         yield return new WaitForSeconds(Configs.Instance.Get.harvestDuration);
         player.AddFlower();
-        seedling.DelayedDestroy();
+        if (seedling != null)
+            seedling.DelayedDestroy();
     }
 
     private void HandleOnRemove(InteractiveRotatable obj)
@@ -160,8 +161,8 @@ public class GameManager : MonoBehaviour
         if (rotatables.Contains(obj))
         {
             rotatables.Remove(obj);
-            obj.gameObject.SetActive(false);
-            Destroy(obj);
+            if (obj != null)
+                Destroy(obj);
         }
     }
 

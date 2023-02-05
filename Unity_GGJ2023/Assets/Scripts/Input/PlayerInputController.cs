@@ -42,13 +42,11 @@ public class PlayerInputController : MonoBehaviour
         }else if(context.ReadValue<Vector2>()[0] < 0f){
             isRunningLeftMultiplier = -1;
         }
-        Debug.Log("context readvalue " + context.ReadValue<Vector2>()[0] + "("+isRunningLeftMultiplier+") context.started: " +context.started +" context.performed: " + context.performed + " context.canceled: " + context.canceled);
 
         if (context.performed || context.started)
         {
             if (!inSpeedUp && context.ReadValue<Vector2>()[0] != 0f)
             {
-                Debug.Log("Starting Acceleration with " + curvePointer + " curvePointer");
                 speedUpCoroutine = StartCoroutine("AccelerationFade");
                 return;
             }
@@ -58,7 +56,6 @@ public class PlayerInputController : MonoBehaviour
                 slowDownCoroutine = StartCoroutine("SlowDownFade");
                 return;
             }
-            Debug.Log("OnMove("+isRunningLeftMultiplier+")");
             if(animationCurveValue == 1)
                 OnMove(isRunningLeftMultiplier);
             
@@ -73,7 +70,6 @@ public class PlayerInputController : MonoBehaviour
     }
     public void HandleAction(InputAction.CallbackContext context)
     {
-        //Debug.Log($"HandleMove Trigger. context:{context.valueType}, moveInput:{context.ReadValue<Vector2>()}");
         if (!Application.isFocused)
             return;
         OnAction();
@@ -87,7 +83,6 @@ public class PlayerInputController : MonoBehaviour
 
     IEnumerator AccelerationFade()
     {     
-        Debug.Log("AccelerationFade entry, curvePointer: " + curvePointer);
         if (slowDownCoroutine != null)
         {
             StopCoroutine(slowDownCoroutine);
@@ -106,9 +101,7 @@ public class PlayerInputController : MonoBehaviour
           
         while (elapsedTime < Configs.Instance.Get.speedFadeTime)
         {
-            //Debug.Log("AccelerationFade while, curvePointer: " + curvePointer + ", animationCurveValue: " + animationCurveValue);
             elapsedTime += Time.deltaTime; //fixedDelta?
-            //Debug.Log("AccelerationFade while, elapsed Time:" + elapsedTime + " curveDuration: " + Configs.Instance.Get.speedFadeTime + " /= " + (elapsedTime / curveDuration));
             curvePointer += (Time.deltaTime / Configs.Instance.Get.speedFadeTime);
             animationCurveValue = SpeedAcc.Evaluate(curvePointer);
             OnMove(animationCurveValue * isRunningLeftMultiplier);
@@ -144,9 +137,7 @@ public class PlayerInputController : MonoBehaviour
 
         while (elapsedTime < Configs.Instance.Get.speedFadeTime)
         {
-            //Debug.Log("AccelerationFade while, curvePointer: " + curvePointer + ", animationCurveValue: " + animationCurveValue);
             elapsedTime += Time.deltaTime; //fixedDelta?
-            //Debug.Log("SlowDownFade while, elapsed Time:" + elapsedTime + " curveDuration: " + Configs.Instance.Get.speedFadeTime + " /= " + (elapsedTime / Configs.Instance.Get.speedFadeTime));
             curvePointer -= (Time.deltaTime / Configs.Instance.Get.speedFadeTime);
             animationCurveValue = SpeedAcc.Evaluate(curvePointer);
             OnMove(animationCurveValue * isRunningLeftMultiplier);
