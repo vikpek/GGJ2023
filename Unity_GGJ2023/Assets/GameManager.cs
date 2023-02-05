@@ -32,7 +32,6 @@ public class GameManager : MonoBehaviour
     {
         AudioManager.Instance.PlayMusic(MusicPurpose.Chill, true);
         playerSpawner.OnPlayerSpawn += HandlePlayerSpawn;
-        InvokeRepeating("SpawnTick", 0f, Configs.Instance.Get.spawnInterval);
         rotatables.Add(Instantiate(planetPrefab, planetCenter));
 
         timeRemaining = Configs.Instance.Get.durationUntilWin;
@@ -43,8 +42,8 @@ public class GameManager : MonoBehaviour
     }
     private void IncreaseDifficulty()
     {
-        Debug.Log($"Spawnintervall set to {Configs.Instance.Get.spawnInterval}");
         Configs.Instance.Get.spawnInterval -= Configs.Instance.Get.increaseDifficultyStep;
+        Debug.Log($"Spawnintervall set to {Configs.Instance.Get.spawnInterval}");
     }
 
     private void InitWater(float rotation)
@@ -63,12 +62,6 @@ public class GameManager : MonoBehaviour
         };
         rotatables.Add(obj);
         players.Add(obj);
-    }
-    void SpawnTick()
-    {
-        var weedRoot = SpawnWeedRoot();
-        OnWeedGrow += weedRoot.Grow;
-        weedRoots.Add(weedRoot);
     }
 
     Random rand = new();
@@ -244,8 +237,19 @@ public class GameManager : MonoBehaviour
         throw new NotImplementedException();
     }
 
+    private float difficultyTimer = 0f;
+
     void Update()
     {
+        difficultyTimer += Time.deltaTime;
+        if (difficultyTimer >= Configs.Instance.Get.spawnInterval)
+        {
+            var weedRoot = SpawnWeedRoot();
+            OnWeedGrow += weedRoot.Grow;
+            weedRoots.Add(weedRoot);
+            difficultyTimer = 0f;
+        }
+
         for (int i = rotatables.Count - 1; i >= 0; i--)
         {
             if (rotatables[i] == null)
@@ -259,5 +263,6 @@ public class GameManager : MonoBehaviour
         timeRemaining -= Time.deltaTime;
         if (timeRemaining <= 0)
             SceneHelper.Instance.GoToVictory();
+
     }
 }
