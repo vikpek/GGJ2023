@@ -44,8 +44,10 @@ namespace DefaultNamespace
             // {
             //     sparkles.Play();
             // }
-            if (progressInPercent >= 1 && !Configs.Instance.Get.godModeON)
-                SceneHelper.Instance.GoToDefeat();
+            if (progressInPercent >= 1){
+                SceneHelper.Instance.GoToDefeat();                
+                AudioManager.Instance.PlayAudio(ClipPurpose.GameOverSound);
+            }
         }
     }
 }

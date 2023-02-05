@@ -183,10 +183,14 @@ MonoBehaviour:
     AudioClip: {fileID: 8300000, guid: 05decdf6e39359449ad48671553774f1, type: 3}
   - ClipPurpose: 2
     AudioClip: {fileID: 8300000, guid: f10e3ebdc51c7c344a4750ed22a1575c, type: 3}
-  - ClipPurpose: 0
-    AudioClip: {fileID: 0}
   - ClipPurpose: 3
     AudioClip: {fileID: 8300000, guid: 350f65b45f80d2647a801bc110444ad3, type: 3}
+  - ClipPurpose: 4
+    AudioClip: {fileID: 8300000, guid: 57dee66214db60149a065ad5497119ea, type: 3}
+  - ClipPurpose: 5
+    AudioClip: {fileID: 8300000, guid: 23ae3cb74ba00e7468aef675a5576c12, type: 3}
+  - ClipPurpose: 6
+    AudioClip: {fileID: 8300000, guid: 23ae3cb74ba00e7468aef675a5576c12, type: 3}
   musicCollections:
   - MusicPurpose: 0
     AudioClip: {fileID: 8300000, guid: ac7d6f3ce92848e45892400423cefad1, type: 3}
