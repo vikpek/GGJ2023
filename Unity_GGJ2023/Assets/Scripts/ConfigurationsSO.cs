@@ -32,4 +32,5 @@ public class ConfigurationsSO : ScriptableObject
     public float spawnSeedDuration = 3f;
     public float harvestDuration = 3f;
     public float wateringDuration = 3f;
+    public float durationUntilWin = 30f;
 }

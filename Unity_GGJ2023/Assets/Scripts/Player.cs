@@ -47,6 +47,10 @@ namespace DefaultNamespace
         private float RemainingInteractionTime = 0f;
         private float FullInteractionTime = 0f;
 
+        private State state = State.None;
+
+        public enum State {None, Planting, Stomping, Harvesting};
+
 
         void Awake()
         {
@@ -74,6 +78,10 @@ namespace DefaultNamespace
             playerInput.OnMove -= HandleMove;
             playerInput.OnAction -= HandleAction;
         }
+
+        public bool InState(State state) => this.state == state;
+
+        public void SwitchState(State state) => this.state = state;
 
         public void SetUpPlayer(int playerId)
         {
@@ -134,18 +142,21 @@ namespace DefaultNamespace
         }
         private void HandleAction()
         {
+            Debug.Log($"HandleAction: weeds: {weedRootsWithinRange.Count} + seeds: {seedlingsWithinRange.Count}, water: {waterWithinRange.Count}");
             if (weedRootsWithinRange.Count <= 0 &&
                 seedlingsWithinRange.Count <= 0 &&
                 waterWithinRange.Count <= 0)
             {
+                Debug.Log($"HandleAction: weeds: {weedRootsWithinRange.Count} + seeds: {seedlingsWithinRange.Count}, water: {waterWithinRange.Count}");
                 OnInteract(null);
                 return;
             }
 
-
             if (weedRootsWithinRange.Count > 0)
+            {
                 animator.SetTrigger("TriggerHit");
-
+                AudioManager.Instance.PlayAudio(ClipPurpose.Stomping);
+            }
             else if (seedlingsWithinRange.Count > 0)
                 animator.SetBool("Watering", true);
 
@@ -168,21 +179,29 @@ namespace DefaultNamespace
             }
         }
 
+        public void RemoveWeedRoots(WeedRoot weedRoot){
+            Debug.Log("RemoveWeedRoot: " + weedRoot);
+            if(weedRootsWithinRange.Contains(weedRoot)){
+                weedRootsWithinRange.Remove(weedRoot);
+            }
+        }
+
+        public void RemoveSeedling(Seedling seedling){
+            Debug.Log("RemoveSeedling: " + seedling);
+            if(seedlingsWithinRange.Contains(seedling)){
+                seedlingsWithinRange.Remove(seedling);
+            }
+        }
+
         private void FixedUpdate() => AddRotation(currentSpeed);
 
         private void Update()
         {
             if (RemainingInteractionTime > 0)
             {
-                cargoImage.fillAmount = CalculatePercentage(RemainingInteractionTime, FullInteractionTime);
+                cargoImage.fillAmount = CalculationHelper.CalculatePercentage(RemainingInteractionTime, FullInteractionTime);
                 RemainingInteractionTime -= Time.deltaTime;
             }
-        }
-
-        public static float CalculatePercentage(float currentTime, float totalTime)
-        {
-            float calculatePercentage = (100f - (currentTime / totalTime * 100)) / 100f;
-            return calculatePercentage;
         }
 
         private void HandleMove(float speed)
@@ -242,12 +261,15 @@ namespace DefaultNamespace
             {
                 case InteractionType.Seed:
                     cargoImage.sprite = Configs.Instance.Get.leafSprite;
+                    AudioManager.Instance.PlayAudio(ClipPurpose.Planting);
                     break;
                 case InteractionType.Water:
                     cargoImage.sprite = Configs.Instance.Get.waterSprite;
+                    AudioManager.Instance.PlayAudio(ClipPurpose.Watering);
                     break;
                 case InteractionType.Harvest:
                     cargoImage.sprite = Configs.Instance.Get.flowerSprite;
+                    AudioManager.Instance.PlayAudio(ClipPurpose.Gathering);
                     break;
             }
         }
