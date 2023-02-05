@@ -36,6 +36,8 @@ namespace DefaultNamespace
         private List<Seedling> seedlingsWithinRange = new();
         private List<Water> waterWithinRange = new();
 
+        private bool isBlocked = false;
+
         void Awake()
         {
             playerInput = GetComponent<PlayerInputController>();
@@ -156,6 +158,12 @@ namespace DefaultNamespace
         }
         private void HandleMove(float speed)
         {
+            if (isBlocked)
+            {
+                currentSpeed = 0;
+                return;
+            }
+
             currentSpeed = (speed * Configs.Instance.Get.maxSpeed);
             animator.SetFloat("Speed", currentSpeed);
             animator.SetBool("Watering", false);
@@ -192,6 +200,16 @@ namespace DefaultNamespace
         {
             yield return null;
             aoeRadius.enabled = false;
+        }
+        public void BlockedByInteraction(float duration)
+        {
+            StartCoroutine(BlockedForSeconds(duration));
+        }
+        private IEnumerator BlockedForSeconds(float duration)
+        {
+            isBlocked = true;
+            yield return new WaitForSeconds(duration);
+            isBlocked = false;
         }
     }
 }

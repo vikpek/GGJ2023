@@ -1,6 +1,8 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using DefaultNamespace;
+using UnityEditor.Experimental.GraphView;
 using UnityEngine;
 using Random = System.Random;
 public class GameManager : MonoBehaviour
@@ -93,8 +95,7 @@ public class GameManager : MonoBehaviour
                 case Seedling seedling:
                     if (seedling.IsReadyToHarvest)
                     {
-                        player.AddFlower();
-                        seedling.DelayedDestroy();
+                        HandleHarvest(seedling, player);
                         break;
                     }
                     if (player.HasWater())
@@ -118,6 +119,18 @@ public class GameManager : MonoBehaviour
             }
         }
     }
+    private void HandleHarvest(Seedling seedling, Player player)
+    {
+        StartCoroutine(DelayedHarvest(seedling, player));
+    }
+    private IEnumerator DelayedHarvest(Seedling seedling, Player player)
+    {
+        player.BlockedByInteraction(Configs.Instance.Get.harvestDuration);
+        yield return new WaitForSeconds(Configs.Instance.Get.harvestDuration);
+        player.AddFlower();
+        seedling.DelayedDestroy();
+    }
+
     private void HandleOnRemove(InteractiveRotatable obj)
     {
         if (rotatables.Contains(obj))
@@ -130,6 +143,13 @@ public class GameManager : MonoBehaviour
 
     private void SpawnSeedling(Player player)
     {
+        StartCoroutine(SpawnSeedlingDelayed(player));
+
+
+    }
+    private IEnumerator SpawnSeedlingDelayed(Player player)
+    {
+        yield return new WaitForSeconds(Configs.Instance.Get.spawnSeedDuration);
         Seedling seedling = Instantiate(seedlingPrefab, planetCenter);
         seedling.rotatingObject.rotation = player.rotatingObject.rotation;
         seedling.OnInteract += HandleInteractWithSeedling;

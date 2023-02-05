@@ -28,4 +28,6 @@ public class ConfigurationsSO : ScriptableObject
     public float flowerDestructionDelay = 2f;
     public float growingPhaseLastDuration = 5f;
     public float aoeRadius = 3f;
+    public float spawnSeedDuration = 3f;
+    public float harvestDuration = 3f;
 }
