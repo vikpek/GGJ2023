@@ -26,6 +26,7 @@ public class PlayerSpawner : MonoBehaviour
     {
     	var player = input.GetComponent<Player>();
         OnPlayerSpawn(player);
+        player.SetUpPlayer(input.playerIndex);
         players.Add(player);
         var pi = input.GetComponent<PlayerInputController>();
         if(input.currentControlScheme == "Gamepad")

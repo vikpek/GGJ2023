@@ -20,6 +20,8 @@ namespace DefaultNamespace
         [SerializeField] private Animator animator;
         [SerializeField] private SpriteRenderer cargoSprite;
 
+        [SerializeField] private PlayerSkin[] playerSkins;
+
         [SerializeField] private ColliderForwarder aoeColliderForwarder;
         [SerializeField] private CircleCollider2D aoeRadius;
         
@@ -63,6 +65,14 @@ namespace DefaultNamespace
             aoeColliderForwarder.OnTriggerEnterForward -= OnForwardedAoeTriggerEnter;
             playerInput.OnMove -= HandleMove;
             playerInput.OnAction -= HandleAction;
+        }
+
+        public void SetUpPlayer(int playerId){
+            if(playerId >= playerSkins.Length)
+                playerId = 0;
+
+                animator = playerSkins[playerId].Animator;
+                playerSkins[playerId].gameObject.SetActive(true);            
         }
         private void OnForwardedPlayerTriggerEnter(Collider2D collider)
         {
