@@ -47,7 +47,7 @@ namespace DefaultNamespace
                 emissionModule.enabled = true;
             }
 
-            if (progressInPercent >= 1)
+            if (progressInPercent >= 1 && !Configs.Instance.Get.godModeON)
                 SceneHelper.Instance.GoToDefeat();
         }
     }

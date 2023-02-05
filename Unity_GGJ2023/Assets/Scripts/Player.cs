@@ -106,7 +106,9 @@ namespace DefaultNamespace
         }
         private void OnForwardedAoeTriggerEnter(Collider2D collider)
         {
+            Debug.Log("OnForwardedAoeTrigger");
             WeedRoot[] weedRoots = collider.GetComponentsInParent<WeedRoot>();
+            Debug.Log("OnForwardedAoeTrigger weedRoots: " + weedRoots);
             if (weedRoots is null)
                 return;
 
@@ -245,6 +247,7 @@ namespace DefaultNamespace
         public void UseWater()
         {
             CurrentlyHolding = Cargo.Nothing;
+            animator.SetBool("Watering", true);
             waterLevel = 0;
         }
         public void AddFlower()
@@ -292,10 +295,13 @@ namespace DefaultNamespace
                 case InteractionType.Seed:
                     cargoImage.sprite = Configs.Instance.Get.leafSprite;
                     AudioManager.Instance.PlayAudio(ClipPurpose.Planting);
+                    animator.SetFloat("Speed", 0f);
                     break;
                 case InteractionType.Water:
                     cargoImage.sprite = Configs.Instance.Get.waterSprite;
                     AudioManager.Instance.PlayAudio(ClipPurpose.Watering);
+                    animator.SetBool("Watering", true);
+                    animator.SetFloat("Speed", 0f);
                     break;
                 case InteractionType.WaterPickup:
                     cargoImage.sprite = Configs.Instance.Get.waterSprite;
@@ -304,6 +310,7 @@ namespace DefaultNamespace
                 case InteractionType.Harvest:
                     cargoImage.sprite = Configs.Instance.Get.flowerSprite;
                     AudioManager.Instance.PlayAudio(ClipPurpose.Gathering);
+                    animator.SetTrigger("TriggerHit");
                     break;
             }
         }

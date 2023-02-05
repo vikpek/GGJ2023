@@ -21,7 +21,7 @@ MonoBehaviour:
   maxSpeed: 1
   speedFadeTime: 0.2
   spawnInterval: 10
-  interactionDelay: 0.5
+  interactionDelay: 1
   ripOutStrength: 500
   growingPercentageForVFXRootWarning: 60
   growingStateSpeedSlowDown: 8000
@@ -37,3 +37,4 @@ MonoBehaviour:
   harvestDuration: 3
   wateringDuration: 2
   durationUntilWin: 150
+  godModeON: 1
