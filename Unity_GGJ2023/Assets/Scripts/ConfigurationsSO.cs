@@ -23,6 +23,7 @@ public class ConfigurationsSO : ScriptableObject
     public float growingStateSpeedSlowDown = 1000f;
     public Sprite waterSprite;
     public Sprite flowerSprite;
+    public Sprite leafSprite;
     public float growingPhase1Duration = 2f;
     public float growingPhase2Duration = 2f;
     public float flowerDestructionDelay = 2f;
@@ -30,4 +31,5 @@ public class ConfigurationsSO : ScriptableObject
     public float aoeRadius = 3f;
     public float spawnSeedDuration = 3f;
     public float harvestDuration = 3f;
+    public float wateringDuration = 3f;
 }
