@@ -43,7 +43,6 @@ public class GameManager : MonoBehaviour
     private void IncreaseDifficulty()
     {
         Configs.Instance.Get.spawnInterval -= Configs.Instance.Get.increaseDifficultyStep;
-        Debug.Log($"Spawnintervall set to {Configs.Instance.Get.spawnInterval}");
     }
 
     private void InitWater(float rotation)
@@ -73,14 +72,24 @@ public class GameManager : MonoBehaviour
 
         rotatables.Add(weedRootInstance);
         weedRootInstance.OnRemove += HandleOnRemove;
+        weedRootInstance.OnCriticalState += HandleCriticalState;
+
         return weedRootInstance;
+    }
+
+    private bool ReachedCritical = false;
+    private void HandleCriticalState()
+    {
+        if (ReachedCritical)
+            return;
+
+        ReachedCritical = true;
+        AudioManager.Instance.PlayMusic(MusicPurpose.Hectic);
     }
     private bool IsCloseToWater(WeedRoot weedRoot)
     {
         foreach (Water water in waterz)
         {
-            var distance = Vector2.Distance(weedRoot.GetComponentInChildren<SpriteRenderer>().transform.position, water.GetComponentInChildren<SpriteRenderer>().transform.position);
-            Debug.Log($"distance {distance}");
             if (Vector2.Distance(weedRoot.rotatingObject.transform.position, water.rotatingObject.transform.position) < 1)
             {
                 return true;

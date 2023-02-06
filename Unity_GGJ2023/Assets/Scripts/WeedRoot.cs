@@ -7,15 +7,12 @@ namespace DefaultNamespace
     {
         [SerializeField] private List<SpriteRenderer> interactiveRotatableRenderer;
         [SerializeField] private ParticleSystem sparkles;
-        private void Start()
-        {
-        }
+
+        public event Action OnCriticalState = delegate { };
+
         public void RipOut()
         {
             growingState -= Configs.Instance.Get.ripOutStrength;
-            Debug.Log("RipOut, growingState = " + growingState);
-            UpdateWeedRootState();
-
             if (growingState <= 0)
                 RaiseOnRemove(this);
         }
@@ -25,7 +22,7 @@ namespace DefaultNamespace
             base.UpdateVisuals();
             UpdateWeedRootState();
         }
-        
+
         private void UpdateWeedRootState()
         {
             float progressInPercent = Clamp(growingState / Configs.Instance.Get.growingStateSpeedSlowDown, 0, 1);
@@ -40,6 +37,8 @@ namespace DefaultNamespace
                 interactiveRotatableRenderer[i].material.SetFloat("_Progress", progressInPercent);
             }
 
+            if (progressInPercent >= 0.6f)
+                OnCriticalState();
 
             if (progressInPercent >= 1f){
                 SceneHelper.Instance.GoToDefeat();                

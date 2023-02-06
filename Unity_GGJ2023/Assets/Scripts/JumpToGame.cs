@@ -8,6 +8,7 @@ namespace DefaultNamespace
     public class JumpToGame : MonoBehaviour
     {       
         [SerializeField] PlayerInput playerInput;
+
         public void GoToGame()
         {
             playerInput.DeactivateInput();
