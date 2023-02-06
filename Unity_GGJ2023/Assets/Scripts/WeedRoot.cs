@@ -40,11 +40,8 @@ namespace DefaultNamespace
                 interactiveRotatableRenderer[i].material.SetFloat("_Progress", progressInPercent);
             }
 
-            // if (progressInPercent > 0.6)
-            // {
-            //     sparkles.Play();
-            // }
-            if (progressInPercent >= 1){
+
+            if (progressInPercent >= 1f){
                 SceneHelper.Instance.GoToDefeat();                
                 AudioManager.Instance.PlayAudio(ClipPurpose.GameOverSound);
             }
