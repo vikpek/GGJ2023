@@ -225,18 +225,18 @@ public class GameManager : MonoBehaviour
         yield return new WaitForSeconds(Configs.Instance.Get.spawnSeedDuration);
         Seedling seedling = Instantiate(seedlingPrefab, planetCenter);
         seedling.rotatingObject.rotation = player.rotatingObject.rotation;
-        seedling.OnInteract += HandleInteractWithSeedling;
         seedling.OnRemove += HandleOnRemove;
         rotatables.Add(seedling);
         player.HideCargoUI();
         player.SwitchState(Player.State.None);
     }
-    private void HandleInteractWithSeedling(InteractiveRotatable obj)
-    {
-        throw new NotImplementedException();
-    }
+
 
     private float difficultyTimer = 0f;
+    private void FixedUpdate()
+    {
+        OnWeedGrow();
+    }
 
     void Update()
     {
@@ -258,12 +258,11 @@ public class GameManager : MonoBehaviour
             }
             rotatables[i].AddRotation(Configs.Instance.Get.rotationSpeed);
         }
-        OnWeedGrow();
+
         timeRemaining -= Time.deltaTime;
         if (timeRemaining <= 0){
             AudioManager.Instance.PlayAudio(ClipPurpose.WinningSound);
             SceneHelper.Instance.GoToVictory();
         }
-
     }
 }
