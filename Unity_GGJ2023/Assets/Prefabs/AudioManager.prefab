@@ -194,6 +194,10 @@ MonoBehaviour:
   musicCollections:
   - MusicPurpose: 0
     AudioClip: {fileID: 8300000, guid: ac7d6f3ce92848e45892400423cefad1, type: 3}
+  - MusicPurpose: 1
+    AudioClip: {fileID: 8300000, guid: 8f9f78d1b71d0b948848f5c276a80630, type: 3}
+  - MusicPurpose: 3
+    AudioClip: {fileID: 8300000, guid: 57dee66214db60149a065ad5497119ea, type: 3}
 --- !u!1 &7723912830680838936
 GameObject:
   m_ObjectHideFlags: 0
